@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pide tu presupuesto — Placas de Energía</title>
+    <meta name="description" content="Formulario para solicitar presupuesto de instalación fotovoltaica. Envío de resumen por WhatsApp." />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root { --bg: #0b0b0c; --card:#131316; --muted:#9aa0a6; --text:#f5f7fa; --primary:#22c55e; --accent:#a1f29a; --ring:#2dd4bf; }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: radial-gradient(1200px 800px at 10% -10%, #101014, transparent 60%), var(--bg); color: var(--text); }
+      .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
+      header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; }
+      .brand { display:flex; align-items:center; gap:12px; }
+      .logo { width:40px; height:40px; border-radius:12px; background: linear-gradient(135deg, var(--primary), var(--ring)); box-shadow: 0 8px 28px rgba(34,197,94,.35); animation: float 4s ease-in-out infinite; }
+      @keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-3px);} }
+      h1 { font-size: clamp(22px, 3vw, 28px); margin:0; letter-spacing: .2px; }
+      .card { background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00)); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04); backdrop-filter: blur(6px); }
+      .grid { display:grid; grid-template-columns: 1fr; gap:16px; }
+      @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+      label { display:block; font-weight:600; font-size:14px; margin-bottom:8px; }
+      input[type="text"], input[type="email"], input[type="tel"], textarea { width:100%; padding:14px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:#0f0f12; color:var(--text); outline:none; transition: border-color .2s, box-shadow .2s, transform .05s; }
+      textarea { min-height: 120px; resize: vertical; }
+      input::placeholder, textarea::placeholder { color:#7c828a; }
+      input:focus, textarea:focus { border-color: var(--ring); box-shadow: 0 0 0 4px rgba(45,212,191,.15); }
+      .hint { color: var(--muted); font-size: 12px; margin-top:6px; }
+      .file { position: relative; display:flex; align-items:center; gap:12px; border:1px dashed rgba(255,255,255,.18); background: #0f1012; padding:14px; border-radius: 12px; }
+      .file input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+      .file .tag { padding:6px 10px; background: rgba(34,197,94,.12); color: var(--accent); border:1px solid rgba(34,197,94,.35); border-radius: 10px; font-size: 12px; }
+      .row { display:flex; align-items:center; gap:10px; }
+      .check { display:flex; gap:10px; align-items:flex-start; }
+      .check input { width:18px; height:18px; accent-color: var(--primary); margin-top:2px; }
+      .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top: 10px; }
+      .btn { appearance:none; border:none; border-radius: 12px; padding: 14px 18px; font-weight:700; color:#0b0b0c; background: linear-gradient(135deg, var(--primary), var(--ring)); box-shadow: 0 10px 24px rgba(34,197,94,.35); cursor:pointer; transition: transform .06s ease, filter .2s ease; }
+      .btn:active { transform: translateY(1px); }
+      .btn.sec { background: #191b1f; color: var(--text); border:1px solid rgba(255,255,255,.10); box-shadow: none; }
+      .copy-area { width:100%; min-height: 80px; }
+      .divider { height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent); margin: 8px 0 2px; }
+      .footer { margin-top: 28px; color: var(--muted); font-size:12px; text-align:center; }
+      .small { font-size: 12px; color: var(--muted); }
+      .badge { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); font-size:12px; }
+      .pulse { width:8px; height:8px; background: var(--primary); border-radius:999px; box-shadow: 0 0 0 0 rgba(34,197,94,.7); animation: pulse 2s infinite; }
+      @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,.6);} 70%{ box-shadow: 0 0 0 12px rgba(34,197,94,0);} 100%{ box-shadow: 0 0 0 0 rgba(34,197,94,0);} }
+      a { color: #7ce2ff; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden></div>
+          <div>
+            <h1>Pide tu presupuesto — Placas de Energía</h1>
+            <div class="small">Completa el formulario y envía el resumen por WhatsApp.</div>
+          </div>
+        </div>
+        <span class="badge"><span class="pulse" aria-hidden></span> Respuesta en menos de 24h</span>
+      </header>
+
+      <main class="card">
+        <form id="quoteForm" novalidate>
+          <div class="grid grid-2">
+            <div>
+              <label for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required />
+            </div>
+            <div>
+              <label for="apellidos">Apellidos</label>
+              <input id="apellidos" name="apellidos" type="text" placeholder="Tus apellidos" required />
+            </div>
+            <div>
+              <label for="email">Correo electrónico</label>
+              <input id="email" name="email" type="email" placeholder="tucorreo@dominio.com" required />
+            </div>
+            <div>
+              <label for="telefono">Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" placeholder="+34 600 000 000" pattern="^[+0-9 ()-]{7,}$" required />
+            </div>
+            <div>
+              <label for="coords">Coordenadas Google Maps de la instalación</label>
+              <input id="coords" name="coords" type="text" placeholder="Ej: 39.5696, 2.6502" required />
+              <div class="hint">Puedes pegar un enlace de Google Maps o escribir latitud, longitud.</div>
+            </div>
+            <div>
+              <label>Adjuntar factura eléctrica (PDF/JPG/PNG)</label>
+              <div class="file" id="fileBox">
+                <span class="tag">Cargar archivo</span>
+                <span id="fileName" class="small">Ningún archivo seleccionado</span>
+                <input id="factura" name="factura" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+              </div>
+              <div class="hint">El archivo no se envía por WhatsApp; se registrará el nombre del documento.</div>
+            </div>
+            <div class="grid" style="grid-column: 1 / -1;">
+              <div>
+                <label for="observaciones">Observaciones de la instalación</label>
+                <textarea id="observaciones" name="observaciones" placeholder="Ej.: Tejado a dos aguas, orientación sur, 90 m² útiles, sin sombras..."></textarea>
+              </div>
+            </div>
+            <div class="grid" style="grid-column: 1 / -1;">
+              <div class="divider"></div>
+              <div class="check">
+                <input id="privacidad" name="privacidad" type="checkbox" required />
+                <label for="privacidad">Al marcar, he leído y acepto la <a href="#" target="_blank" rel="noopener">Política de Privacidad</a>.</label>
+              </div>
+              <div class="small">Tus datos se usan únicamente para elaborar el presupuesto y contactarte.</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn" id="sendWA">Enviar resumen por WhatsApp</button>
+            <button type="button" class="btn sec" id="copySummary">Copiar resumen</button>
+          </div>
+
+          <div class="grid" style="grid-column: 1 / -1; margin-top: 10px;">
+            <label class="small" for="preview">Vista previa del mensaje</label>
+            <textarea id="preview" class="copy-area" readonly></textarea>
+          </div>
+        </form>
+      </main>
+
+      <p class="footer">© <span id="year"></span> Empresa de Energía Solar. Todos los derechos reservados.</p>
+    </div>
+
+    <script>
+      const form = document.getElementById('quoteForm');
+      const preview = document.getElementById('preview');
+      const fileInput = document.getElementById('factura');
+      const fileName = document.getElementById('fileName');
+      const year = document.getElementById('year');
+      year.textContent = new Date().getFullYear();
+
+      fileInput.addEventListener('change', () => {
+        const f = fileInput.files?.[0];
+        fileName.textContent = f ? f.name : 'Ningún archivo seleccionado';
+        updatePreview();
+      });
+
+      ['nombre','apellidos','email','telefono','coords','observaciones','privacidad'].forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', updatePreview);
+      });
+
+      function sanitize(str){ return String(str||'').trim(); }
+      function parseCoords(input){
+        const s = sanitize(input);
+        // Intento extraer lat,lon desde URL de Google Maps
+        const urlMatch = s.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+        if (urlMatch) return `${urlMatch[1]}, ${urlMatch[2]}`;
+        // Si ya viene como "lat, lon"
+        const pair = s.match(/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/);
+        if (pair) return `${pair[1]}, ${pair[2]}`;
+        return s; // fallback
+      }
+
+      function buildSummary(){
+        const nombre = sanitize(document.getElementById('nombre').value);
+        const apellidos = sanitize(document.getElementById('apellidos').value);
+        const email = sanitize(document.getElementById('email').value);
+        const telefono = sanitize(document.getElementById('telefono').value);
+        const coords = parseCoords(document.getElementById('coords').value);
+        const obs = sanitize(document.getElementById('observaciones').value);
+        const factura = fileInput.files?.[0]?.name || '—';
+
+        const lines = [
+          'Solicitud de Presupuesto — Placas de Energía',
+          '-------------------------------------------',
+          `Nombre: ${nombre}`,
+          `Apellidos: ${apellidos}`,
+          `Email: ${email}`,
+          `Teléfono: ${telefono}`,
+          `Coordenadas instalación: ${coords}`,
+          `Factura adjunta (nombre): ${factura}`,
+          `Observaciones: ${obs || '—'}`,
+          '',
+          'He leído y acepto la Política de Privacidad.'
+        ];
+        return lines.join('\n');
+      }
+
+      function updatePreview(){
+        preview.value = buildSummary();
+      }
+
+      updatePreview();
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        const msg = encodeURIComponent(buildSummary());
+        // Número de WhatsApp con prefijo internacional (+34 España)
+        const phone = '34600821668';
+        const url = `https://wa.me/${phone}?text=${msg}`;
+        window.open(url, '_blank');
+      });
+
+      document.getElementById('copySummary').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(buildSummary());
+          const btn = document.getElementById('copySummary');
+          const prev = btn.textContent;
+          btn.textContent = '¡Copiado!';
+          setTimeout(() => (btn.textContent = prev), 1200);
+        } catch (err) {
+          alert('No se pudo copiar. Selecciona el texto y copia manualmente.');
+        }
+      });
+    </script>
+  </body>
+</html>
