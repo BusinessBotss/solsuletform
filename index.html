@@ -3,176 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pide tu presupuesto — Placas de Energía</title>
+    <title>Solicitud de Presupuesto - Placas de Energía</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-green: #22c55e;
-            --primary-turquoise: #2dd4bf;
-            --bg-dark: #0b0b0c;
-            --bg-card: #0f0f12;
-            --text-white: #f5f7fa;
-            --text-gray: #7c828a;
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #F8F7F2;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1B1B1B;
+            --text-secondary: #7A7463;
+            --text-muted: #6F6A5A;
+            --accent-primary: #D4AF37;
+            --accent-secondary: #C9A227;
+            --accent-light: #FFE8A3;
+            --border-color: rgba(232, 217, 168, 0.4);
+            --shadow-color: rgba(20, 16, 8, 0.06);
+            --card-bg: #FFFFFF;
+        }
+
+        .dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f5f7fa;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #10b981;
+            --accent-secondary: #059669;
+            --accent-light: #6ee7b7;
+            --border-color: rgba(16, 185, 129, 0.3);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --card-bg: #1e293b;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(ellipse at center, #1a1a2e 0%, var(--bg-dark) 70%);
-            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.45;
+            letter-spacing: 0.2px;
             min-height: 100vh;
-            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(20px, 4vw, 48px);
+        }
+
+        /* Language Selector & Theme Toggle */
+        .language-selector {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            margin-bottom: 20px;
+        }
+
+        .lang-chips {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-chip {
+            padding: 6px 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-chip.active {
+            background: linear-gradient(135deg, var(--card-bg), rgba(212, 175, 55, 0.1));
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .lang-chip:hover {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: var(--accent-primary);
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px var(--shadow-color);
+        }
+
+        /* Header */
+        .header {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-emblem {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
             transition: all 0.3s ease;
         }
 
-        body[dir="rtl"] {
-            direction: rtl;
+        .logo-emblem::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 30%, var(--accent-light) 70%);
+            border-radius: 12px;
+            opacity: 0.3;
+        }
+
+        .logo-emblem::after {
+            content: 'S';
+            font-weight: 700;
+            font-size: 20px;
+            color: white;
+            z-index: 1;
+            position: relative;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-3px); }
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        .title-section h1 {
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
         }
 
-        .language-selector {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.5rem;
-        }
-
-        body[dir="rtl"] .language-selector {
-            right: auto;
-            left: 20px;
-        }
-
-        .lang-btn {
-            padding: 0.5rem 0.75rem;
-            background: transparent;
-            border: none;
-            color: var(--text-gray);
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .lang-btn:hover {
-            color: var(--text-white);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .lang-btn.active {
-            color: var(--primary-green);
-            background: rgba(34, 197, 94, 0.2);
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 60px;
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-green), var(--primary-turquoise));
-            border-radius: 8px;
-            animation: float 3s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .header-content {
-            flex: 1;
-            margin-left: 1rem;
-        }
-
-        body[dir="rtl"] .header-content {
-            margin-left: 0;
-            margin-right: 1rem;
-        }
-
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .header-subtitle {
-            font-size: 0.9rem;
-            color: var(--text-gray);
+        .title-section p {
+            font-size: 14px;
+            color: var(--text-secondary);
             font-weight: 400;
+            transition: color 0.3s ease;
         }
 
         .status-badge {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
-            font-size: 0.85rem;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-primary);
+            transition: all 0.3s ease;
         }
 
         .status-dot {
             width: 8px;
             height: 8px;
-            background: var(--primary-green);
+            background: var(--accent-primary);
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
 
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem 2rem;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
-        .form-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
+        /* Main Card */
+        .main-card {
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: clamp(24px, 4vw, 36px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
         }
 
+        /* Form Grid */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .form-group {
@@ -185,976 +237,1098 @@
         }
 
         label {
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
         }
 
-        input, textarea, select {
-            background: var(--bg-card);
+        input, textarea {
+            padding: 14px 16px;
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 0.75rem 1rem;
-            color: var(--text-white);
-            font-size: 0.9rem;
+            font-family: inherit;
+            font-size: 14px;
+            background: var(--card-bg);
+            color: var(--text-primary);
             transition: all 0.3s ease;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-turquoise);
-            box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.2);
         }
 
         input::placeholder, textarea::placeholder {
-            color: var(--text-gray);
+            color: var(--text-muted);
         }
 
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+
+        .dark-mode input:focus, .dark-mode textarea:focus {
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* File Upload */
         .file-upload {
             border: 2px dashed var(--border-color);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 32px;
             text-align: center;
+            background: var(--card-bg);
             transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
         }
 
         .file-upload:hover {
-            border-color: var(--primary-green);
-            background: rgba(34, 197, 94, 0.05);
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
         }
 
-        .file-upload input {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
+        .file-upload-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: var(--accent-primary);
         }
 
-        .upload-btn {
-            background: rgba(34, 197, 94, 0.2);
-            color: var(--primary-green);
-            border: none;
-            padding: 0.5rem 1rem;
+        .file-upload-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .file-upload-button {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            padding: 8px 16px;
             border-radius: 8px;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-button:hover {
+            background: var(--bg-secondary);
         }
 
         .file-name {
-            margin-top: 0.5rem;
-            color: var(--primary-green);
-            font-size: 0.85rem;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--accent-secondary);
+            font-weight: 500;
         }
 
-        .checkbox-group {
+        /* Privacy Policy */
+        .privacy-section {
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
-            margin: 1.5rem 0;
+            gap: 12px;
+            margin: 32px 0;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
         }
 
-        .checkbox-group input[type="checkbox"] {
+        .privacy-checkbox {
             width: 18px;
             height: 18px;
-            margin: 0;
-            accent-color: var(--primary-green);
+            border: 1px solid var(--accent-primary);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: var(--card-bg);
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.3s ease;
         }
 
-        .checkbox-label {
-            font-size: 0.85rem;
-            line-height: 1.4;
+        .privacy-checkbox.checked {
+            background: var(--accent-primary);
+            color: white;
         }
 
-        .checkbox-label a {
-            color: var(--primary-turquoise);
-            text-decoration: none;
+        .privacy-link {
+            color: var(--accent-primary);
+            text-decoration: underline;
         }
 
+        /* Divider */
         .divider {
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
-            margin: 1.5rem 0;
+            background: linear-gradient(90deg, transparent, #FFF6DB, #D4AF37, #FFF6DB, transparent);
+            margin: 20px 0;
         }
 
-        .actions {
+        /* Buttons */
+        .button-group {
             display: flex;
-            gap: 1rem;
+            gap: 16px;
             flex-wrap: wrap;
-            margin-bottom: 2rem;
+            justify-content: center;
+            margin-bottom: 32px;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 12px 24px;
             border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
+            transition: all 0.2s ease;
+            display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
             border: none;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-green), var(--primary-turquoise));
-            color: white;
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            background: var(--card-bg);
+            border: 1px solid var(--accent-primary);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px var(--shadow-color);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+            box-shadow: 0 8px 20px var(--shadow-color);
+            background: var(--bg-secondary);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-white);
-            border: 1px solid var(--border-color);
+            background: transparent;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--bg-secondary);
         }
 
-        .btn-outline {
+        .btn-ghost {
             background: transparent;
-            color: var(--primary-turquoise);
-            border: 1px solid var(--primary-turquoise);
+            border: 1px solid var(--border-color);
+            color: var(--accent-primary);
         }
 
-        .btn-outline:hover {
-            background: rgba(45, 212, 191, 0.1);
+        .btn-ghost:hover {
+            background: var(--bg-secondary);
         }
 
-        .preview-area {
-            background: var(--bg-card);
+        /* Message Preview */
+        .message-preview {
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
+            padding: 20px;
+            margin-bottom: 32px;
+            font-family: 'Inter', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            transition: all 0.3s ease;
         }
 
-        .preview-label {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            margin-bottom: 0.5rem;
+        .message-header {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
         }
 
-        .preview-text {
-            font-size: 0.85rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            min-height: 100px;
+        .message-body {
+            color: var(--text-primary);
+            white-space: pre-line;
         }
 
+        /* Services Section */
         .services-section {
-            margin-top: 4rem;
+            text-align: center;
+            margin-top: 60px;
         }
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--primary-green), var(--primary-turquoise));
+        .services-title {
+            font-size: 26px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary), var(--accent-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 32px;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-top: 40px;
         }
 
-        .service-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .service-title {
-            color: var(--primary-green);
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .service-description {
-            font-size: 0.875rem;
-            line-height: 1.5;
-            margin-bottom: 1.25rem;
-            color: var(--text-white);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            margin-top: 4rem;
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-
-        .tooltip-text {
-            visibility: hidden;
-            width: 200px;
-            background-color: var(--bg-card);
-            color: var(--text-white);
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.75rem;
-            border: 1px solid var(--border-color);
-        }
-
-        body[dir="rtl"] .tooltip-text {
-            left: auto;
-            right: 50%;
-            margin-left: 0;
-            margin-right: -100px;
-        }
-
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        @media (max-width: 900px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .header-content {
-                margin-left: 0;
-                margin-right: 0;
-            }
-
+        @media (max-width: 768px) {
             .services-grid {
                 grid-template-columns: 1fr;
             }
-
-            .language-selector {
-                position: relative;
-                top: auto;
-                right: auto;
-                left: auto;
-                margin: 1rem auto;
-                width: fit-content;
-            }
-
-            .header {
-                margin-top: 0;
-            }
         }
 
-        @media (max-width: 720px) {
-            .main-container {
-                padding: 0 1rem 1rem;
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-content p:last-child {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: left;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px var(--shadow-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px var(--shadow-color);
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .service-icon {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .service-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .service-button {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .service-button:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                height: auto;
+                padding: 20px 0;
             }
 
-            .form-card {
-                padding: 1.5rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actions {
+            .button-group {
                 flex-direction: column;
             }
 
             .btn {
-                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="language-selector">
-        <button class="lang-btn active" onclick="changeLanguage('es')">ES</button>
-        <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
-        <button class="lang-btn" onclick="changeLanguage('de')">DE</button>
-        <button class="lang-btn" onclick="changeLanguage('fr')">FR</button>
-        <button class="lang-btn" onclick="changeLanguage('ru')">RU</button>
-        <button class="lang-btn" onclick="changeLanguage('ar')">AR</button>
-    </div>
-
-    <header class="header">
-        <div style="display: flex; align-items: center;">
-            <div class="logo">S</div>
-            <div class="header-content">
-                <h1 class="header-title" data-translate="header.title">Pide tu presupuesto — Placas de Energía</h1>
-                <p class="header-subtitle" data-translate="header.subtitle">Soluciones fotovoltaicas personalizadas para tu hogar o empresa</p>
+    <div class="container">
+        <!-- Language Selector -->
+        <div class="language-selector">
+            <div class="lang-chips">
+                <span class="lang-chip active" onclick="switchLanguage('es')">ES</span>
+                <span class="lang-chip" onclick="switchLanguage('en')">EN</span>
+                <span class="lang-chip" onclick="switchLanguage('de')">DE</span>
+                <span class="lang-chip" onclick="switchLanguage('fr')">FR</span>
+                <span class="lang-chip" onclick="switchLanguage('ru')">RU</span>
+                <span class="lang-chip" onclick="switchLanguage('ar')">AR</span>
             </div>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                <span id="themeIcon">🌙</span>
+            </button>
         </div>
-        <div class="status-badge">
-            <div class="status-dot"></div>
-            <span data-translate="header.response">Respuesta en menos de 24h</span>
-        </div>
-    </header>
 
-    <div class="main-container">
-        <div class="form-card">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-emblem"></div>
+                <div class="title-section">
+                    <h1>Pide tu presupuesto — Placas de Energía</h1>
+                    <p>Soluciones fotovoltaicas personalizadas para tu hogar o empresa</p>
+                </div>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                Respuesta en menos de 24h
+            </div>
+        </header>
+
+        <!-- Main Form Card -->
+        <div class="main-card">
             <form id="quoteForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="firstName" data-translate="form.firstName">Nombre</label>
-                        <input type="text" id="firstName" name="firstName" data-translate-placeholder="form.firstNamePlaceholder" placeholder="Tu nombre" required>
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="lastName" data-translate="form.lastName">Apellidos</label>
-                        <input type="text" id="lastName" name="lastName" data-translate-placeholder="form.lastNamePlaceholder" placeholder="Tus apellidos" required>
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" id="apellidos" name="apellidos" placeholder="Tus apellidos" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="email" data-translate="form.email">Email</label>
-                        <input type="email" id="email" name="email" data-translate-placeholder="form.emailPlaceholder" placeholder="tu@email.com" required>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="phone" data-translate="form.phone">Teléfono</label>
-                        <input type="tel" id="phone" name="phone" data-translate-placeholder="form.phonePlaceholder" placeholder="+34 600 000 000" required>
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="+34 600 000 000" required>
                     </div>
+                    
                     <div class="form-group full-width">
-                        <label for="coordinates" class="tooltip">
-                            <span data-translate="form.coordinates">Coordenadas Google Maps</span>
-                            <span class="tooltip-text" data-translate="form.coordinatesTooltip">Introduce las coordenadas (lat, lng) o pega la URL de Google Maps</span>
-                        </label>
-                        <input type="text" id="coordinates" name="coordinates" data-translate-placeholder="form.coordinatesPlaceholder" placeholder="40.4168, -3.7038 o URL de Google Maps">
+                        <label for="coordenadas">Coordenadas Google Maps</label>
+                        <input type="text" id="coordenadas" name="coordenadas" placeholder="40.4168, -3.7038 o URL de Google Maps">
                     </div>
+                    
                     <div class="form-group full-width">
-                        <label data-translate="form.bill">Factura eléctrica</label>
-                        <div class="file-upload" onclick="document.getElementById('billFile').click()">
-                            <input type="file" id="billFile" name="billFile" accept=".pdf,.jpg,.jpeg,.png">
-                            <div data-translate="form.dragFile">📄 Arrastra tu factura aquí</div>
-                            <button type="button" class="upload-btn" data-translate="form.uploadBtn">Cargar archivo</button>
+                        <label for="factura">Adjuntar factura eléctrica</label>
+                        <div class="file-upload" onclick="document.getElementById('facturaFile').click()">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">Arrastra tu factura aquí o haz clic para seleccionar</div>
+                            <button type="button" class="file-upload-button">Cargar archivo</button>
+                            <input type="file" id="facturaFile" style="display: none" accept=".pdf,.jpg,.jpeg,.png">
                             <div class="file-name" id="fileName"></div>
                         </div>
                     </div>
+                    
                     <div class="form-group full-width">
-                        <label for="observations" data-translate="form.observations">Observaciones</label>
-                        <textarea id="observations" name="observations" rows="4" data-translate-placeholder="form.observationsPlaceholder" placeholder="Cuéntanos más detalles sobre tu proyecto..." style="resize: vertical;"></textarea>
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" name="observaciones" placeholder="Cuéntanos más detalles sobre tu proyecto..."></textarea>
                     </div>
                 </div>
 
-                <div class="checkbox-group">
-                    <input type="checkbox" id="privacy" name="privacy" required>
-                    <label for="privacy" class="checkbox-label">
-                        <span data-translate="form.privacyText">Acepto la</span> <a href="#" target="_blank" data-translate="form.privacyLink">Política de Privacidad</a> <span data-translate="form.privacyText2">y el tratamiento de mis datos personales</span>
-                    </label>
+                <div class="privacy-section">
+                    <div class="privacy-checkbox" id="privacyCheck" onclick="togglePrivacy()">
+                        <span id="checkMark" style="display: none;">✓</span>
+                    </div>
+                    <div>
+                        Acepto la <a href="#" class="privacy-link">Política de Privacidad</a> y el tratamiento de mis datos personales para el envío de presupuestos.
+                    </div>
                 </div>
 
                 <div class="divider"></div>
 
-                <div class="actions">
+                <div class="button-group">
                     <button type="button" class="btn btn-primary" onclick="sendWhatsApp()">
-                        📱 <span data-translate="actions.sendWhatsApp">Enviar resumen por WhatsApp</span>
+                        <span>📱</span> Enviar por WhatsApp
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="copySummary()">
-                        📋 <span data-translate="actions.copySummary">Copiar resumen</span>
+                    <button type="button" class="btn btn-secondary" onclick="copyMessage()">
+                        <span>📋</span> Copiar mensaje
                     </button>
-                    <a href="https://www.solsulet.com/" target="_blank" class="btn btn-outline">
-                        🌐 <span data-translate="actions.visitWebsite">Visitar página web</span>
+                    <a href="https://www.solsulet.com" class="btn btn-ghost" target="_blank">
+                        <span>🌐</span> Visitar www.solsulet.com
                     </a>
                 </div>
-
-                <div class="preview-area">
-                    <div class="preview-label" data-translate="preview.label">Vista previa del mensaje:</div>
-                    <div class="preview-text" id="previewText" data-translate="preview.placeholder">Completa el formulario para ver la vista previa del mensaje...</div>
-                </div>
             </form>
+
+            <!-- Message Preview -->
+            <div class="message-preview" id="messagePreview">
+                <div class="message-header">🌞 SOLICITUD DE PRESUPUESTO - PLACAS SOLARES</div>
+                <div class="message-body" id="messageBody">
+Completa el formulario para ver la vista previa del mensaje...
+                </div>
+            </div>
         </div>
 
+        <!-- Services Section -->
         <section class="services-section">
-            <h2 class="section-title" data-translate="services.title">Nuestros Servicios</h2>
-            <div class="services-grid" id="servicesGrid">
-                <!-- Services will be populated by JavaScript -->
+            <h2 class="services-title">Nuestros Servicios</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">☀️</div>
+                        <h3 class="service-title" data-service="autoconsumo">Instalaciones de Autoconsumo</h3>
+                    </div>
+                    <div class="service-description" data-service="autoconsumo">Realizamos instalaciones de paneles solares y baterías en hogares, comunidades y empresas para generar su propia electricidad. Siempre con los productos más innovadores para poder reducir la dependencia energética de la red eléctrica y reducir los costes energéticos.</div>
+                    <button class="service-button" onclick="contactService('autoconsumo')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">⚡</div>
+                        <h3 class="service-title" data-service="suministro">Soluciones en tu Suministro</h3>
+                    </div>
+                    <div class="service-description" data-service="suministro">Realizamos instalaciones de paneles solares y baterías en hogares, comunidades y empresas para generar su propia electricidad. Siempre con los productos más innovadores para poder reducir la dependencia energética de la red eléctrica y reducir los costes energéticos.</div>
+                    <button class="service-button" onclick="contactService('suministro')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🏝️</div>
+                        <h3 class="service-title" data-service="aisladas">Instalaciones Aisladas de la Red</h3>
+                    </div>
+                    <div class="service-description" data-service="aisladas">Somos especialistas en diseño e instalación de sistemas solares autónomos que no dependan de la red eléctrica, tanto en regadíos como en viviendas combinados o no con grupos electrógenos y de acumulación u otras energías renovables.</div>
+                    <button class="service-button" onclick="contactService('aisladas')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🚗</div>
+                        <h3 class="service-title" data-service="cargadores">Cargadores de Vehículo Eléctrico</h3>
+                    </div>
+                    <div class="service-description" data-service="cargadores">Instalamos cargadores para vehículos eléctricos (V.E.), permitiendo a los usuarios cargar sus coches eléctricos en casa o en su negocio aprovechando la energía solar generada. También se puede incluir una marquesina solar y sistemas de gestión de carga, así como carga con pago para clientes o usuarios externos.</div>
+                    <button class="service-button" onclick="contactService('cargadores')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🔧</div>
+                        <h3 class="service-title" data-service="mantenimiento">Mantenimiento y Limpieza</h3>
+                    </div>
+                    <div class="service-description" data-service="mantenimiento">Ofrecemos servicios de mantenimiento, guardia 24/7, limpieza y sistemas de protección contra la suciedad o las aves, para asegurar que sus paneles solares funcionen de manera óptima, prolongando su vida útil y manteniendo su eficiencia. Sistema de monitorización propio con IA integrada para aviso de incidencias, baja producción y control mensual del funcionamiento de la instalación.</div>
+                    <button class="service-button" onclick="contactService('mantenimiento')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">📋</div>
+                        <h3 class="service-title" data-service="legalizacion">Legalización de la Instalación</h3>
+                    </div>
+                    <div class="service-description" data-service="legalizacion">Nuestro equipo de ingenieros se ocupará de todos los trámites necesarios para la legalización de su instalación solar y aprovechar todas las ventajas, asegurándonos de que cumpla con todas las normativas y regulaciones vigentes.</div>
+                    <button class="service-button" onclick="contactService('legalizacion')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">💰</div>
+                        <h3 class="service-title" data-service="subvenciones">Tramitación de Subvenciones</h3>
+                    </div>
+                    <div class="service-description" data-service="subvenciones">Gestionamos las subvenciones y ayudas disponibles para su instalación solar, ayudándole a reducir el coste inicial y rentabilizar su inversión en tiempo récord.</div>
+                    <button class="service-button" onclick="contactService('subvenciones')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🏗️</div>
+                        <h3 class="service-title" data-service="ingenieria">Servicios de Ingeniería</h3>
+                    </div>
+                    <div class="service-description" data-service="ingenieria">Proveemos de servicios de ingeniería especializada en diseño y ejecución de proyectos energéticos garantizando soluciones personalizadas y eficientes.</div>
+                    <button class="service-button" onclick="contactService('ingenieria')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">📊</div>
+                        <h3 class="service-title" data-service="asesoria">Asesoría Energética</h3>
+                    </div>
+                    <div class="service-description" data-service="asesoria">Le asesoramos en sus proyectos de eficiencia energética mediante los Certificados de Ahorro Energético, soluciones innovadoras como el sistema Cooper Oner y proyectos de ingeniería para encontrar el sistema más optimo para cubrir sus necesidades. También proveemos de asesoramiento en la contratación de sus facturas con las comercializadoras disponibles con nuestro agente Fenix New Energy.</div>
+                    <button class="service-button" onclick="contactService('asesoria')">Contratar servicio</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-icon">🌞</div>
+                        <h3 class="service-title" data-service="parques">Parques Solares y Productores</h3>
+                    </div>
+                    <div class="service-description" data-service="parques">Desarrollamos y gestionamos parques solares para la producción de energía a gran escala, contribuyendo al suministro de energía limpia y sostenible para comunidad y empresas. Análisis de oportunidades para promotores y gestión del proyecto.</div>
+                    <button class="service-button" onclick="contactService('parques')">Contratar servicio</button>
+                </div>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Solsulet. Todos los derechos reservados.</p>
+                <p>Transformando hogares con energía limpia y renovable</p>
+            </div>
+        </footer>
     </div>
 
-    <footer class="footer">
-        <p>&copy; <span id="currentYear"></span> Solsulet. <span data-translate="footer.rights">Todos los derechos reservados.</span></p>
-    </footer>
-
     <script>
-        // Translations object
-        const translations = {
-            es: {
-                'header.title': 'Pide tu presupuesto — Placas de Energía',
-                'header.subtitle': 'Soluciones fotovoltaicas personalizadas para tu hogar o empresa',
-                'header.response': 'Respuesta en menos de 24h',
-                'form.firstName': 'Nombre',
-                'form.firstNamePlaceholder': 'Tu nombre',
-                'form.lastName': 'Apellidos',
-                'form.lastNamePlaceholder': 'Tus apellidos',
-                'form.email': 'Email',
-                'form.emailPlaceholder': 'tu@email.com',
-                'form.phone': 'Teléfono',
-                'form.phonePlaceholder': '+34 600 000 000',
-                'form.coordinates': 'Coordenadas Google Maps',
-                'form.coordinatesTooltip': 'Introduce las coordenadas (lat, lng) o pega la URL de Google Maps',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 o URL de Google Maps',
-                'form.bill': 'Factura eléctrica',
-                'form.dragFile': '📄 Arrastra tu factura aquí',
-                'form.uploadBtn': 'Cargar archivo',
-                'form.observations': 'Observaciones',
-                'form.observationsPlaceholder': 'Cuéntanos más detalles sobre tu proyecto...',
-                'form.privacyText': 'Acepto la',
-                'form.privacyLink': 'Política de Privacidad',
-                'form.privacyText2': 'y el tratamiento de mis datos personales',
-                'actions.sendWhatsApp': 'Enviar resumen por WhatsApp',
-                'actions.copySummary': 'Copiar resumen',
-                'actions.visitWebsite': 'Visitar página web',
-                'preview.label': 'Vista previa del mensaje:',
-                'preview.placeholder': 'Completa el formulario para ver la vista previa del mensaje...',
-                'services.title': 'Nuestros Servicios',
-                'footer.rights': 'Todos los derechos reservados.',
-                'services.contractBtn': 'Contratar servicio',
-                'whatsapp.title': '🌞 *SOLICITUD DE PRESUPUESTO FOTOVOLTAICO*',
-                'whatsapp.client': '👤 *Cliente:*',
-                'whatsapp.email': '📧 *Email:*',
-                'whatsapp.phone': '📱 *Teléfono:*',
-                'whatsapp.location': '📍 *Ubicación:*',
-                'whatsapp.bill': '📄 *Factura adjunta:*',
-                'whatsapp.observations': '💬 *Observaciones:*',
-                'whatsapp.request': '✨ *Solicito información personalizada sobre instalación fotovoltaica*',
-                'whatsapp.serviceTitle': '🌞 *INTERÉS EN SERVICIO:',
-                'whatsapp.name': '👤 *Nombre:*',
-                'whatsapp.serviceRequest': '✨ *Me interesa el servicio de',
-                'whatsapp.serviceContact': '¿Podrían contactarme?*'
-            },
-            en: {
-                'header.title': 'Get Your Quote — Solar Panels',
-                'header.subtitle': 'Personalized photovoltaic solutions for your home or business',
-                'header.response': 'Response in less than 24h',
-                'form.firstName': 'First Name',
-                'form.firstNamePlaceholder': 'Your first name',
-                'form.lastName': 'Last Name',
-                'form.lastNamePlaceholder': 'Your last name',
-                'form.email': 'Email',
-                'form.emailPlaceholder': 'your@email.com',
-                'form.phone': 'Phone',
-                'form.phonePlaceholder': '+1 555 000 000',
-                'form.coordinates': 'Google Maps Coordinates',
-                'form.coordinatesTooltip': 'Enter coordinates (lat, lng) or paste Google Maps URL',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 or Google Maps URL',
-                'form.bill': 'Electric Bill',
-                'form.dragFile': '📄 Drag your bill here',
-                'form.uploadBtn': 'Upload file',
-                'form.observations': 'Observations',
-                'form.observationsPlaceholder': 'Tell us more details about your project...',
-                'form.privacyText': 'I accept the',
-                'form.privacyLink': 'Privacy Policy',
-                'form.privacyText2': 'and the processing of my personal data',
-                'actions.sendWhatsApp': 'Send summary via WhatsApp',
-                'actions.copySummary': 'Copy summary',
-                'actions.visitWebsite': 'Visit website',
-                'preview.label': 'Message preview:',
-                'preview.placeholder': 'Complete the form to see the message preview...',
-                'services.title': 'Our Services',
-                'footer.rights': 'All rights reserved.',
-                'services.contractBtn': 'Contract service',
-                'whatsapp.title': '🌞 *SOLAR QUOTE REQUEST*',
-                'whatsapp.client': '👤 *Client:*',
-                'whatsapp.email': '📧 *Email:*',
-                'whatsapp.phone': '📱 *Phone:*',
-                'whatsapp.location': '📍 *Location:*',
-                'whatsapp.bill': '📄 *Bill attached:*',
-                'whatsapp.observations': '💬 *Observations:*',
-                'whatsapp.request': '✨ *I request personalized information about solar installation*',
-                'whatsapp.serviceTitle': '🌞 *INTEREST IN SERVICE:',
-                'whatsapp.name': '👤 *Name:*',
-                'whatsapp.serviceRequest': '✨ *I am interested in the service of',
-                'whatsapp.serviceContact': 'Could you contact me?*'
-            },
-            de: {
-                'header.title': 'Angebot anfordern — Solarmodule',
-                'header.subtitle': 'Personalisierte Photovoltaik-Lösungen für Ihr Zuhause oder Unternehmen',
-                'header.response': 'Antwort in weniger als 24h',
-                'form.firstName': 'Vorname',
-                'form.firstNamePlaceholder': 'Ihr Vorname',
-                'form.lastName': 'Nachname',
-                'form.lastNamePlaceholder': 'Ihr Nachname',
-                'form.email': 'E-Mail',
-                'form.emailPlaceholder': 'ihre@email.de',
-                'form.phone': 'Telefon',
-                'form.phonePlaceholder': '+49 30 000 000',
-                'form.coordinates': 'Google Maps Koordinaten',
-                'form.coordinatesTooltip': 'Koordinaten eingeben (lat, lng) oder Google Maps URL einfügen',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 oder Google Maps URL',
-                'form.bill': 'Stromrechnung',
-                'form.dragFile': '📄 Rechnung hier hinziehen',
-                'form.uploadBtn': 'Datei hochladen',
-                'form.observations': 'Bemerkungen',
-                'form.observationsPlaceholder': 'Erzählen Sie uns mehr über Ihr Projekt...',
-                'form.privacyText': 'Ich akzeptiere die',
-                'form.privacyLink': 'Datenschutzrichtlinie',
-                'form.privacyText2': 'und die Verarbeitung meiner persönlichen Daten',
-                'actions.sendWhatsApp': 'Zusammenfassung per WhatsApp senden',
-                'actions.copySummary': 'Zusammenfassung kopieren',
-                'actions.visitWebsite': 'Website besuchen',
-                'preview.label': 'Nachrichtenvorschau:',
-                'preview.placeholder': 'Füllen Sie das Formular aus, um die Nachrichtenvorschau zu sehen...',
-                'services.title': 'Unsere Dienstleistungen',
-                'footer.rights': 'Alle Rechte vorbehalten.',
-                'services.contractBtn': 'Service beauftragen',
-                'whatsapp.title': '🌞 *SOLAR-ANGEBOT ANFRAGE*',
-                'whatsapp.client': '👤 *Kunde:*',
-                'whatsapp.email': '📧 *E-Mail:*',
-                'whatsapp.phone': '📱 *Telefon:*',
-                'whatsapp.location': '📍 *Standort:*',
-                'whatsapp.bill': '📄 *Rechnung beigefügt:*',
-                'whatsapp.observations': '💬 *Bemerkungen:*',
-                'whatsapp.request': '✨ *Ich bitte um personalisierte Informationen über Solarinstallation*',
-                'whatsapp.serviceTitle': '🌞 *INTERESSE AN SERVICE:',
-                'whatsapp.name': '👤 *Name:*',
-                'whatsapp.serviceRequest': '✨ *Ich interessiere mich für den Service',
-                'whatsapp.serviceContact': 'Könnten Sie mich kontaktieren?*'
-            },
-            fr: {
-                'header.title': 'Demandez votre devis — Panneaux Solaires',
-                'header.subtitle': 'Solutions photovoltaïques personnalisées pour votre maison ou entreprise',
-                'header.response': 'Réponse en moins de 24h',
-                'form.firstName': 'Prénom',
-                'form.firstNamePlaceholder': 'Votre prénom',
-                'form.lastName': 'Nom',
-                'form.lastNamePlaceholder': 'Votre nom',
-                'form.email': 'Email',
-                'form.emailPlaceholder': 'votre@email.fr',
-                'form.phone': 'Téléphone',
-                'form.phonePlaceholder': '+33 1 00 00 00 00',
-                'form.coordinates': 'Coordonnées Google Maps',
-                'form.coordinatesTooltip': 'Entrez les coordonnées (lat, lng) ou collez l\'URL Google Maps',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 ou URL Google Maps',
-                'form.bill': 'Facture électrique',
-                'form.dragFile': '📄 Glissez votre facture ici',
-                'form.uploadBtn': 'Télécharger fichier',
-                'form.observations': 'Observations',
-                'form.observationsPlaceholder': 'Parlez-nous de votre projet...',
-                'form.privacyText': 'J\'accepte la',
-                'form.privacyLink': 'Politique de Confidentialité',
-                'form.privacyText2': 'et le traitement de mes données personnelles',
-                'actions.sendWhatsApp': 'Envoyer résumé par WhatsApp',
-                'actions.copySummary': 'Copier résumé',
-                'actions.visitWebsite': 'Visiter le site web',
-                'preview.label': 'Aperçu du message:',
-                'preview.placeholder': 'Complétez le formulaire pour voir l\'aperçu du message...',
-                'services.title': 'Nos Services',
-                'footer.rights': 'Tous droits réservés.',
-                'services.contractBtn': 'Contracter service',
-                'whatsapp.title': '🌞 *DEMANDE DE DEVIS SOLAIRE*',
-                'whatsapp.client': '👤 *Client:*',
-                'whatsapp.email': '📧 *Email:*',
-                'whatsapp.phone': '📱 *Téléphone:*',
-                'whatsapp.location': '📍 *Localisation:*',
-                'whatsapp.bill': '📄 *Facture jointe:*',
-                'whatsapp.observations': '💬 *Observations:*',
-                'whatsapp.request': '✨ *Je demande des informations personnalisées sur l\'installation solaire*',
-                'whatsapp.serviceTitle': '🌞 *INTÉRÊT POUR LE SERVICE:',
-                'whatsapp.name': '👤 *Nom:*',
-                'whatsapp.serviceRequest': '✨ *Je suis intéressé par le service de',
-                'whatsapp.serviceContact': 'Pourriez-vous me contacter?*'
-            },
-            ru: {
-                'header.title': 'Запросить расчет — Солнечные панели',
-                'header.subtitle': 'Персонализированные фотоэлектрические решения для дома или бизнеса',
-                'header.response': 'Ответ менее чем за 24ч',
-                'form.firstName': 'Имя',
-                'form.firstNamePlaceholder': 'Ваше имя',
-                'form.lastName': 'Фамилия',
-                'form.lastNamePlaceholder': 'Ваша фамилия',
-                'form.email': 'Email',
-                'form.emailPlaceholder': 'ваш@email.ru',
-                'form.phone': 'Телефон',
-                'form.phonePlaceholder': '+7 900 000 00 00',
-                'form.coordinates': 'Координаты Google Maps',
-                'form.coordinatesTooltip': 'Введите координаты (широта, долгота) или вставьте URL Google Maps',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 или URL Google Maps',
-                'form.bill': 'Счет за электричество',
-                'form.dragFile': '📄 Перетащите счет сюда',
-                'form.uploadBtn': 'Загрузить файл',
-                'form.observations': 'Примечания',
-                'form.observationsPlaceholder': 'Расскажите больше о вашем проекте...',
-                'form.privacyText': 'Я принимаю',
-                'form.privacyLink': 'Политику конфиденциальности',
-                'form.privacyText2': 'и обработку моих персональных данных',
-                'actions.sendWhatsApp': 'Отправить резюме через WhatsApp',
-                'actions.copySummary': 'Копировать резюме',
-                'actions.visitWebsite': 'Посетить сайт',
-                'preview.label': 'Предварительный просмотр сообщения:',
-                'preview.placeholder': 'Заполните форму, чтобы увидеть предварительный просмотр сообщения...',
-                'services.title': 'Наши услуги',
-                'footer.rights': 'Все права защищены.',
-                'services.contractBtn': 'Заказать услугу',
-                'whatsapp.title': '🌞 *ЗАПРОС НА РАСЧЕТ СОЛНЕЧНОЙ УСТАНОВКИ*',
-                'whatsapp.client': '👤 *Клиент:*',
-                'whatsapp.email': '📧 *Email:*',
-                'whatsapp.phone': '📱 *Телефон:*',
-                'whatsapp.location': '📍 *Местоположение:*',
-                'whatsapp.bill': '📄 *Прикрепленный счет:*',
-                'whatsapp.observations': '💬 *Примечания:*',
-                'whatsapp.request': '✨ *Прошу персонализированную информацию о солнечной установке*',
-                'whatsapp.serviceTitle': '🌞 *ИНТЕРЕС К УСЛУГЕ:',
-                'whatsapp.name': '👤 *Имя:*',
-                'whatsapp.serviceRequest': '✨ *Меня интересует услуга',
-                'whatsapp.serviceContact': 'Не могли бы вы связаться со мной?*'
-            },
-            ar: {
-                'header.title': 'اطلب عرض السعر — الألواح الشمسية',
-                'header.subtitle': 'حلول الطاقة الشمسية المخصصة لمنزلك أو شركتك',
-                'header.response': 'الرد في أقل من 24 ساعة',
-                'form.firstName': 'الاسم الأول',
-                'form.firstNamePlaceholder': 'اسمك الأول',
-                'form.lastName': 'اسم العائلة',
-                'form.lastNamePlaceholder': 'اسم عائلتك',
-                'form.email': 'البريد الإلكتروني',
-                'form.emailPlaceholder': 'your@email.com',
-                'form.phone': 'الهاتف',
-                'form.phonePlaceholder': '+966 50 000 0000',
-                'form.coordinates': 'إحداثيات خرائط جوجل',
-                'form.coordinatesTooltip': 'أدخل الإحداثيات (خط العرض، خط الطول) أو الصق رابط خرائط جوجل',
-                'form.coordinatesPlaceholder': '40.4168, -3.7038 أو رابط خرائط جوجل',
-                'form.bill': 'فاتورة الكهرباء',
-                'form.dragFile': '📄 اسحب فاتورتك هنا',
-                'form.uploadBtn': 'رفع ملف',
-                'form.observations': 'ملاحظات',
-                'form.observationsPlaceholder': 'أخبرنا المزيد عن مشروعك...',
-                'form.privacyText': 'أوافق على',
-                'form.privacyLink': 'سياسة الخصوصية',
-                'form.privacyText2': 'ومعالجة بياناتي الشخصية',
-                'actions.sendWhatsApp': 'إرسال الملخص عبر واتساب',
-                'actions.copySummary': 'نسخ الملخص',
-                'actions.visitWebsite': 'زيارة الموقع',
-                'preview.label': 'معاينة الرسالة:',
-                'preview.placeholder': 'أكمل النموذج لرؤية معاينة الرسالة...',
-                'services.title': 'خدماتنا',
-                'footer.rights': 'جميع الحقوق محفوظة.',
-                'services.contractBtn': 'طلب الخدمة',
-                'whatsapp.title': '🌞 *طلب عرض سعر للطاقة الشمسية*',
-                'whatsapp.client': '👤 *العميل:*',
-                'whatsapp.email': '📧 *البريد الإلكتروني:*',
-                'whatsapp.phone': '📱 *الهاتف:*',
-                'whatsapp.location': '📍 *الموقع:*',
-                'whatsapp.bill': '📄 *الفاتورة المرفقة:*',
-                'whatsapp.observations': '💬 *ملاحظات:*',
-                'whatsapp.request': '✨ *أطلب معلومات مخصصة حول تركيب الطاقة الشمسية*',
-                'whatsapp.serviceTitle': '🌞 *اهتمام بالخدمة:',
-                'whatsapp.name': '👤 *الاسم:*',
-                'whatsapp.serviceRequest': '✨ *أنا مهتم بخدمة',
-                'whatsapp.serviceContact': 'هل يمكنكم التواصل معي؟*'
-            }
-        };
-
-        // Services data
-        const servicesData = {
-            es: [
-                { title: 'Autoconsumo', description: 'Instalaciones fotovoltaicas para reducir tu factura eléctrica y generar tu propia energía limpia.' },
-                { title: 'Soluciones de suministro', description: 'Sistemas completos de suministro eléctrico adaptados a las necesidades de tu hogar o empresa.' },
-                { title: 'Instalaciones aisladas', description: 'Sistemas fotovoltaicos independientes para ubicaciones sin conexión a la red eléctrica.' },
-                { title: 'Cargadores de vehículo eléctrico', description: 'Puntos de recarga inteligentes para tu vehículo eléctrico, integrados con tu instalación solar.' },
-                { title: 'Mantenimiento', description: 'Servicios de mantenimiento preventivo y correctivo para garantizar el óptimo rendimiento de tu instalación.' },
-                { title: 'Legalización', description: 'Gestión completa de trámites y documentación legal para tu instalación fotovoltaica.' },
-                { title: 'Subvenciones', description: 'Asesoramiento y gestión de ayudas públicas y subvenciones disponibles para tu proyecto.' },
-                { title: 'Ingeniería', description: 'Proyectos de ingeniería personalizados para instalaciones fotovoltaicas de gran envergadura.' },
-                { title: 'Asesoría energética', description: 'Consultoría especializada para optimizar tu consumo energético y maximizar el ahorro.' },
-                { title: 'Parques solares', description: 'Desarrollo y construcción de parques solares para inversión y generación de energía a gran escala.' }
-            ],
-            en: [
-                { title: 'Self-consumption', description: 'Photovoltaic installations to reduce your electricity bill and generate your own clean energy.' },
-                { title: 'Supply solutions', description: 'Complete electrical supply systems adapted to the needs of your home or business.' },
-                { title: 'Off-grid installations', description: 'Independent photovoltaic systems for locations without connection to the electrical grid.' },
-                { title: 'Electric vehicle chargers', description: 'Smart charging points for your electric vehicle, integrated with your solar installation.' },
-                { title: 'Maintenance', description: 'Preventive and corrective maintenance services to ensure optimal performance of your installation.' },
-                { title: 'Legalization', description: 'Complete management of procedures and legal documentation for your photovoltaic installation.' },
-                { title: 'Subsidies', description: 'Advice and management of public aid and subsidies available for your project.' },
-                { title: 'Engineering', description: 'Customized engineering projects for large-scale photovoltaic installations.' },
-                { title: 'Energy consulting', description: 'Specialized consulting to optimize your energy consumption and maximize savings.' },
-                { title: 'Solar parks', description: 'Development and construction of solar parks for investment and large-scale energy generation.' }
-            ],
-            de: [
-                { title: 'Eigenverbrauch', description: 'Photovoltaik-Anlagen zur Reduzierung Ihrer Stromrechnung und Erzeugung eigener sauberer Energie.' },
-                { title: 'Versorgungslösungen', description: 'Komplette Stromversorgungssysteme, angepasst an die Bedürfnisse Ihres Hauses oder Unternehmens.' },
-                { title: 'Inselanlagen', description: 'Unabhängige Photovoltaik-Systeme für Standorte ohne Anschluss an das Stromnetz.' },
-                { title: 'Elektrofahrzeug-Ladegeräte', description: 'Intelligente Ladestationen für Ihr Elektrofahrzeug, integriert in Ihre Solaranlage.' },
-                { title: 'Wartung', description: 'Präventive und korrektive Wartungsdienste zur Gewährleistung optimaler Leistung Ihrer Anlage.' },
-                { title: 'Legalisierung', description: 'Komplette Verwaltung von Verfahren und rechtlicher Dokumentation für Ihre Photovoltaik-Anlage.' },
-                { title: 'Subventionen', description: 'Beratung und Verwaltung öffentlicher Hilfen und Subventionen für Ihr Projekt.' },
-                { title: 'Ingenieurwesen', description: 'Maßgeschneiderte Ingenieursprojekte für großangelegte Photovoltaik-Anlagen.' },
-                { title: 'Energieberatung', description: 'Spezialisierte Beratung zur Optimierung Ihres Energieverbrauchs und Maximierung der Einsparungen.' },
-                { title: 'Solarparks', description: 'Entwicklung und Bau von Solarparks für Investitionen und großangelegte Energieerzeugung.' }
-            ],
-            fr: [
-                { title: 'Autoconsommation', description: 'Installations photovoltaïques pour réduire votre facture d\'électricité et générer votre propre énergie propre.' },
-                { title: 'Solutions d\'approvisionnement', description: 'Systèmes complets d\'approvisionnement électrique adaptés aux besoins de votre maison ou entreprise.' },
-                { title: 'Installations isolées', description: 'Systèmes photovoltaïques indépendants pour les emplacements sans connexion au réseau électrique.' },
-                { title: 'Chargeurs de véhicules électriques', description: 'Points de recharge intelligents pour votre véhicule électrique, intégrés à votre installation solaire.' },
-                { title: 'Maintenance', description: 'Services de maintenance préventive et corrective pour garantir les performances optimales de votre installation.' },
-                { title: 'Légalisation', description: 'Gestion complète des procédures et de la documentation légale pour votre installation photovoltaïque.' },
-                { title: 'Subventions', description: 'Conseil et gestion des aides publiques et subventions disponibles pour votre projet.' },
-                { title: 'Ingénierie', description: 'Projets d\'ingénierie personnalisés pour les installations photovoltaïques de grande envergure.' },
-                { title: 'Conseil énergétique', description: 'Conseil spécialisé pour optimiser votre consommation d\'énergie et maximiser les économies.' },
-                { title: 'Parcs solaires', description: 'Développement et construction de parcs solaires pour l\'investissement et la génération d\'énergie à grande échelle.' }
-            ],
-            ru: [
-                { title: 'Самопотребление', description: 'Фотоэлектрические установки для снижения счетов за электричество и производства собственной чистой энергии.' },
-                { title: 'Решения для энергоснабжения', description: 'Полные системы электроснабжения, адаптированные к потребностям вашего дома или бизнеса.' },
-                { title: 'Автономные установки', description: 'Независимые фотоэлектрические системы для мест без подключения к электросети.' },
-                { title: 'Зарядные устройства для электромобилей', description: 'Умные зарядные станции для вашего электромобиля, интегрированные с солнечной установкой.' },
-                { title: 'Обслуживание', description: 'Услуги профилактического и корректирующего обслуживания для обеспечения оптимальной работы установки.' },
-                { title: 'Легализация', description: 'Полное управление процедурами и юридической документацией для вашей фотоэлектрической установки.' },
-                { title: 'Субсидии', description: 'Консультации и управление государственной помощью и субсидиями, доступными для вашего проекта.' },
-                { title: 'Инжиниринг', description: 'Индивидуальные инженерные проекты для крупномасштабных фотоэлектрических установок.' },
-                { title: 'Энергетическое консультирование', description: 'Специализированные консультации для оптимизации потребления энергии и максимизации экономии.' },
-                { title: 'Солнечные парки', description: 'Разработка и строительство солнечных парков для инвестиций и крупномасштабного производства энергии.' }
-            ],
-            ar: [
-                { title: 'الاستهلاك الذاتي', description: 'تركيبات الطاقة الشمسية لتقليل فاتورة الكهرباء وتوليد طاقتك النظيفة الخاصة.' },
-                { title: 'حلول الإمداد', description: 'أنظمة إمداد كهربائية كاملة مكيفة لاحتياجات منزلك أو شركتك.' },
-                { title: 'التركيبات المعزولة', description: 'أنظمة طاقة شمسية مستقلة للمواقع بدون اتصال بشبكة الكهرباء.' },
-                { title: 'شواحن المركبات الكهربائية', description: 'نقاط شحن ذكية لمركبتك الكهربائية، متكاملة مع تركيب الطاقة الشمسية.' },
-                { title: 'الصيانة', description: 'خدمات الصيانة الوقائية والتصحيحية لضمان الأداء الأمثل لتركيبك.' },
-                { title: 'التقنين', description: 'إدارة كاملة للإجراءات والوثائق القانونية لتركيب الطاقة الشمسية.' },
-                { title: 'الإعانات', description: 'المشورة وإدارة المساعدات العامة والإعانات المتاحة لمشروعك.' },
-                { title: 'الهندسة', description: 'مشاريع هندسية مخصصة لتركيبات الطاقة الشمسية واسعة النطاق.' },
-                { title: 'الاستشارات الطاقية', description: 'استشارات متخصصة لتحسين استهلاك الطاقة وتعظيم التوفير.' },
-                { title: 'المتنزهات الشمسية', description: 'تطوير وبناء متنزهات شمسية للاستثمار وتوليد الطاقة على نطاق واسع.' }
-            ]
-        };
-
+        let privacyAccepted = false;
+        let isDarkMode = false;
         let currentLanguage = 'es';
 
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        const translations = {
+            es: {
+                title: "Pide tu presupuesto — Placas de Energía",
+                subtitle: "Soluciones fotovoltaicas personalizadas para tu hogar o empresa",
+                response: "Respuesta en menos de 24h",
+                name: "Nombre",
+                namePlaceholder: "Tu nombre",
+                surname: "Apellidos", 
+                surnamePlaceholder: "Tus apellidos",
+                email: "Email",
+                emailPlaceholder: "tu@email.com",
+                phone: "Teléfono",
+                phonePlaceholder: "+34 600 000 000",
+                coordinates: "Coordenadas Google Maps",
+                coordinatesPlaceholder: "40.4168, -3.7038 o URL de Google Maps",
+                invoice: "Adjuntar factura eléctrica",
+                invoiceText: "Arrastra tu factura aquí o haz clic para seleccionar",
+                loadFile: "Cargar archivo",
+                observations: "Observaciones",
+                observationsPlaceholder: "Cuéntanos más detalles sobre tu proyecto...",
+                privacy: "Acepto la Política de Privacidad y el tratamiento de mis datos personales para el envío de presupuestos.",
+                sendWhatsApp: "Enviar por WhatsApp",
+                copyMessage: "Copiar mensaje",
+                visitWeb: "Visitar www.solsulet.com",
+                messageHeader: "🌞 SOLICITUD DE PRESUPUESTO - PLACAS SOLARES",
+                previewText: "Completa el formulario para ver la vista previa del mensaje...",
+                servicesTitle: "Nuestros Servicios",
+                services: {
+                    autoconsumo: { title: "Instalaciones de Autoconsumo", desc: "Realizamos instalaciones de paneles solares y baterías en hogares, comunidades y empresas para generar su propia electricidad. Siempre con los productos más innovadores para poder reducir la dependencia energética de la red eléctrica y reducir los costes energéticos.", whatsapp: "AUTOCONSUMO" },
+                    suministro: { title: "Soluciones en tu Suministro", desc: "Realizamos instalaciones de paneles solares y baterías en hogares, comunidades y empresas para generar su propia electricidad. Siempre con los productos más innovadores para poder reducir la dependencia energética de la red eléctrica y reducir los costes energéticos.", whatsapp: "SUMINISTRO" },
+                    aisladas: { title: "Instalaciones Aisladas de la Red", desc: "Somos especialistas en diseño e instalación de sistemas solares autónomos que no dependan de la red eléctrica, tanto en regadíos como en viviendas combinados o no con grupos electrógenos y de acumulación u otras energías renovables.", whatsapp: "INSTALACIONES+AISLADAS" },
+                    cargadores: { title: "Cargadores de Vehículo Eléctrico", desc: "Instalamos cargadores para vehículos eléctricos (V.E.), permitiendo a los usuarios cargar sus coches eléctricos en casa o en su negocio aprovechando la energía solar generada. También se puede incluir una marquesina solar y sistemas de gestión de carga, así como carga con pago para clientes o usuarios externos.", whatsapp: "CARGADORES+VE" },
+                    mantenimiento: { title: "Mantenimiento y Limpieza", desc: "Ofrecemos servicios de mantenimiento, guardia 24/7, limpieza y sistemas de protección contra la suciedad o las aves, para asegurar que sus paneles solares funcionen de manera óptima, prolongando su vida útil y manteniendo su eficiencia. Sistema de monitorización propio con IA integrada para aviso de incidencias, baja producción y control mensual del funcionamiento de la instalación.", whatsapp: "MANTENIMIENTO" },
+                    legalizacion: { title: "Legalización de la Instalación", desc: "Nuestro equipo de ingenieros se ocupará de todos los trámites necesarios para la legalización de su instalación solar y aprovechar todas las ventajas, asegurándonos de que cumpla con todas las normativas y regulaciones vigentes.", whatsapp: "LEGALIZACION" },
+                    subvenciones: { title: "Tramitación de Subvenciones", desc: "Gestionamos las subvenciones y ayudas disponibles para su instalación solar, ayudándole a reducir el coste inicial y rentabilizar su inversión en tiempo récord.", whatsapp: "SUBVENCIONES" },
+                    ingenieria: { title: "Servicios de Ingeniería", desc: "Proveemos de servicios de ingeniería especializada en diseño y ejecución de proyectos energéticos garantizando soluciones personalizadas y eficientes.", whatsapp: "INGENIERIA" },
+                    asesoria: { title: "Asesoría Energética", desc: "Le asesoramos en sus proyectos de eficiencia energética mediante los Certificados de Ahorro Energético, soluciones innovadoras como el sistema Cooper Oner y proyectos de ingeniería para encontrar el sistema más optimo para cubrir sus necesidades. También proveemos de asesoramiento en la contratación de sus facturas con las comercializadoras disponibles con nuestro agente Fenix New Energy.", whatsapp: "ASESORIA+ENERGETICA" },
+                    parques: { title: "Parques Solares y Productores", desc: "Desarrollamos y gestionamos parques solares para la producción de energía a gran escala, contribuyendo al suministro de energía limpia y sostenible para comunidad y empresas. Análisis de oportunidades para promotores y gestión del proyecto.", whatsapp: "PARQUES+SOLARES" }
+                },
+                contractService: "Contratar servicio",
+                footer: "© 2025 Solsulet. Todos los derechos reservados."
+            },
+            en: {
+                title: "Request your quote — Solar Panels",
+                subtitle: "Customized photovoltaic solutions for your home or business",
+                response: "Response in less than 24h",
+                name: "Name",
+                namePlaceholder: "Your name",
+                surname: "Surname",
+                surnamePlaceholder: "Your surname",
+                email: "Email",
+                emailPlaceholder: "your@email.com",
+                phone: "Phone",
+                phonePlaceholder: "+44 700 000 000",
+                coordinates: "Google Maps Coordinates",
+                coordinatesPlaceholder: "51.5074, -0.1278 or Google Maps URL",
+                invoice: "Attach electricity bill",
+                invoiceText: "Drag your bill here or click to select",
+                loadFile: "Load file",
+                observations: "Observations",
+                observationsPlaceholder: "Tell us more details about your project...",
+                privacy: "I accept the Privacy Policy and the processing of my personal data for sending quotes.",
+                sendWhatsApp: "Send via WhatsApp",
+                copyMessage: "Copy message",
+                visitWeb: "Visit www.solsulet.com",
+                messageHeader: "🌞 SOLAR PANEL QUOTE REQUEST",
+                previewText: "Complete the form to see the message preview...",
+                servicesTitle: "Our Services",
+                services: {
+                    autoconsumo: { title: "Self-Consumption Installations", desc: "We carry out solar panel and battery installations in homes, communities and businesses to generate their own electricity. Always with the most innovative products to reduce energy dependence on the electrical grid and reduce energy costs.", whatsapp: "SELF+CONSUMPTION" },
+                    suministro: { title: "Supply Solutions", desc: "We carry out solar panel and battery installations in homes, communities and businesses to generate their own electricity. Always with the most innovative products to reduce energy dependence on the electrical grid and reduce energy costs.", whatsapp: "SUPPLY+SOLUTIONS" },
+                    aisladas: { title: "Off-Grid Installations", desc: "We are specialists in the design and installation of autonomous solar systems that do not depend on the electrical grid, both in irrigation and in homes combined or not with generator sets and accumulation or other renewable energies.", whatsapp: "OFF+GRID+INSTALLATIONS" },
+                    cargadores: { title: "Electric Vehicle Chargers", desc: "We install chargers for electric vehicles (E.V.), allowing users to charge their electric cars at home or in their business taking advantage of the solar energy generated. It can also include a solar canopy and load management systems, as well as charging with payment for external customers or users.", whatsapp: "EV+CHARGERS" },
+                    mantenimiento: { title: "Maintenance and Cleaning", desc: "We offer maintenance services, 24/7 guard, cleaning and protection systems against dirt or birds, to ensure that your solar panels work optimally, extending their useful life and maintaining their efficiency. Own monitoring system with integrated AI for incident notification, low production and monthly control of installation operation.", whatsapp: "MAINTENANCE" },
+                    legalizacion: { title: "Installation Legalization", desc: "Our team of engineers will take care of all the necessary procedures for the legalization of your solar installation and take advantage of all the advantages, ensuring that it complies with all current regulations and regulations.", whatsapp: "LEGALIZATION" },
+                    subvenciones: { title: "Subsidy Processing", desc: "We manage the subsidies and aid available for your solar installation, helping you reduce the initial cost and make your investment profitable in record time.", whatsapp: "SUBSIDIES" },
+                    ingenieria: { title: "Engineering Services", desc: "We provide specialized engineering services in the design and execution of energy projects guaranteeing personalized and efficient solutions.", whatsapp: "ENGINEERING" },
+                    asesoria: { title: "Energy Consulting", desc: "We advise you on your energy efficiency projects through Energy Saving Certificates, innovative solutions such as the Cooper Oner system and engineering projects to find the most optimal system to cover your needs. We also provide advice on contracting your bills with the available marketers with our Fenix New Energy agent.", whatsapp: "ENERGY+CONSULTING" },
+                    parques: { title: "Solar Parks and Producers", desc: "We develop and manage solar parks for large-scale energy production, contributing to the supply of clean and sustainable energy for communities and businesses. Opportunity analysis for developers and project management.", whatsapp: "SOLAR+PARKS" }
+                },
+                contractService: "Contract service",
+                footer: "© 2025 Solsulet. All rights reserved."
+            },
+            it: {
+                title: "Richiedi il tuo preventivo — Pannelli Solari",
+                subtitle: "Soluzioni fotovoltaiche personalizzate per la tua casa o azienda",
+                response: "Risposta in meno di 24h",
+                name: "Nome",
+                namePlaceholder: "Il tuo nome",
+                surname: "Cognome",
+                surnamePlaceholder: "Il tuo cognome",
+                email: "Email",
+                emailPlaceholder: "tua@email.com",
+                phone: "Telefono",
+                phonePlaceholder: "+39 300 000 000",
+                coordinates: "Coordinate Google Maps",
+                coordinatesPlaceholder: "41.9028, 12.4964 o URL di Google Maps",
+                invoice: "Allega bolletta elettrica",
+                invoiceText: "Trascina la tua bolletta qui o clicca per selezionare",
+                loadFile: "Carica file",
+                observations: "Osservazioni",
+                observationsPlaceholder: "Raccontaci più dettagli sul tuo progetto...",
+                privacy: "Accetto l'Informativa sulla Privacy e il trattamento dei miei dati personali per l'invio di preventivi.",
+                sendWhatsApp: "Invia via WhatsApp",
+                copyMessage: "Copia messaggio",
+                visitWeb: "Visita www.solsulet.com",
+                messageHeader: "🌞 RICHIESTA PREVENTIVO - PANNELLI SOLARI",
+                previewText: "Completa il modulo per vedere l'anteprima del messaggio...",
+                servicesTitle: "I Nostri Servizi",
+                services: {
+                    autoconsumo: { title: "Installazioni di Autoconsumo", desc: "Realizziamo installazioni di pannelli solari e batterie in case, comunità e aziende per generare la propria elettricità. Sempre con i prodotti più innovativi per ridurre la dipendenza energetica dalla rete elettrica e ridurre i costi energetici.", whatsapp: "AUTOCONSUMO" },
+                    suministro: { title: "Soluzioni per la Fornitura", desc: "Realizziamo installazioni di pannelli solari e batterie in case, comunità e aziende per generare la propria elettricità. Sempre con i prodotti più innovativi per ridurre la dipendenza energetica dalla rete elettrica e ridurre i costi energetici.", whatsapp: "SOLUZIONI+FORNITURA" },
+                    aisladas: { title: "Installazioni Isolate dalla Rete", desc: "Siamo specialisti nella progettazione e installazione di sistemi solari autonomi che non dipendono dalla rete elettrica, sia per l'irrigazione che per le abitazioni combinati o meno con gruppi elettrogeni e di accumulo o altre energie rinnovabili.", whatsapp: "INSTALLAZIONI+ISOLATE" },
+                    cargadores: { title: "Caricatori per Veicoli Elettrici", desc: "Installiamo caricatori per veicoli elettrici (V.E.), permettendo agli utenti di caricare le loro auto elettriche a casa o nella loro attività sfruttando l'energia solare generata. Può anche includere una pensilina solare e sistemi di gestione del carico, così come la ricarica a pagamento per clienti o utenti esterni.", whatsapp: "CARICATORI+VE" },
+                    mantenimiento: { title: "Manutenzione e Pulizia", desc: "Offriamo servizi di manutenzione, guardia 24/7, pulizia e sistemi di protezione contro lo sporco o gli uccelli, per assicurare che i vostri pannelli solari funzionino in modo ottimale, prolungando la loro vita utile e mantenendo la loro efficienza. Sistema di monitoraggio proprio con IA integrata per avviso di incidenti, bassa produzione e controllo mensile del funzionamento dell'installazione.", whatsapp: "MANUTENZIONE" },
+                    legalizacion: { title: "Legalizzazione dell'Installazione", desc: "Il nostro team di ingegneri si occuperà di tutte le pratiche necessarie per la legalizzazione della vostra installazione solare e sfruttare tutti i vantaggi, assicurandoci che rispetti tutte le normative e regolamentazioni vigenti.", whatsapp: "LEGALIZZAZIONE" },
+                    subvenciones: { title: "Tramitazione di Sovvenzioni", desc: "Gestiamo le sovvenzioni e gli aiuti disponibili per la vostra installazione solare, aiutandovi a ridurre il costo iniziale e rendere redditizio il vostro investimento in tempo record.", whatsapp: "SOVVENZIONI" },
+                    ingenieria: { title: "Servizi di Ingegneria", desc: "Forniamo servizi di ingegneria specializzata nella progettazione ed esecuzione di progetti energetici garantendo soluzioni personalizzate ed efficienti.", whatsapp: "INGEGNERIA" },
+                    asesoria: { title: "Consulenza Energetica", desc: "Vi consigliamo nei vostri progetti di efficienza energetica attraverso i Certificati di Risparmio Energetico, soluzioni innovative come il sistema Cooper Oner e progetti di ingegneria per trovare il sistema più ottimale per coprire le vostre esigenze. Forniamo anche consulenza nella contrattazione delle vostre bollette con i commercializzatori disponibili con il nostro agente Fenix New Energy.", whatsapp: "CONSULENZA+ENERGETICA" },
+                    parques: { title: "Parchi Solari e Produttori", desc: "Sviluppiamo e gestiamo parchi solari per la produzione di energia su larga scala, contribuendo alla fornitura di energia pulita e sostenibile per comunità e aziende. Analisi di opportunità per promotori e gestione del progetto.", whatsapp: "PARCHI+SOLARI" }
+                },
+                contractService: "Contratta servizio",
+                footer: "© 2025 Solsulet. Tutti i diritti riservati."
+            },
+            fr: {
+                title: "Demandez votre devis — Panneaux Solaires",
+                subtitle: "Solutions photovoltaïques personnalisées pour votre maison ou entreprise",
+                response: "Réponse en moins de 24h",
+                name: "Nom",
+                namePlaceholder: "Votre nom",
+                surname: "Prénom",
+                surnamePlaceholder: "Votre prénom",
+                email: "Email",
+                emailPlaceholder: "votre@email.com",
+                phone: "Téléphone",
+                phonePlaceholder: "+33 6 00 00 00 00",
+                coordinates: "Coordonnées Google Maps",
+                coordinatesPlaceholder: "48.8566, 2.3522 ou URL Google Maps",
+                invoice: "Joindre facture électrique",
+                invoiceText: "Glissez votre facture ici ou cliquez pour sélectionner",
+                loadFile: "Charger fichier",
+                observations: "Observations",
+                observationsPlaceholder: "Parlez-nous plus en détail de votre projet...",
+                privacy: "J'accepte la Politique de Confidentialité et le traitement de mes données personnelles pour l'envoi de devis.",
+                sendWhatsApp: "Envoyer par WhatsApp",
+                copyMessage: "Copier message",
+                visitWeb: "Visiter www.solsulet.com",
+                messageHeader: "🌞 DEMANDE DE DEVIS - PANNEAUX SOLAIRES",
+                previewText: "Complétez le formulaire pour voir l'aperçu du message...",
+                servicesTitle: "Nos Services",
+                services: {
+                    autoconsumo: { title: "Installations d'Autoconsommation", desc: "Nous réalisons des installations de panneaux solaires et de batteries dans les maisons, communautés et entreprises pour générer leur propre électricité. Toujours avec les produits les plus innovants pour réduire la dépendance énergétique au réseau électrique et réduire les coûts énergétiques.", whatsapp: "AUTOCONSOMMATION" },
+                    suministro: { title: "Solutions d'Approvisionnement", desc: "Nous réalisons des installations de panneaux solaires et de batteries dans les maisons, communautés et entreprises pour générer leur propre électricité. Toujours avec les produits les plus innovants pour réduire la dépendance énergétique au réseau électrique et réduire les coûts énergétiques.", whatsapp: "SOLUTIONS+APPROVISIONNEMENT" },
+                    aisladas: { title: "Installations Isolées du Réseau", desc: "Nous sommes spécialistes dans la conception et l'installation de systèmes solaires autonomes qui ne dépendent pas du réseau électrique, tant pour l'irrigation que pour les habitations combinées ou non avec des groupes électrogènes et d'accumulation ou d'autres énergies renouvelables.", whatsapp: "INSTALLATIONS+ISOLEES" },
+                    cargadores: { title: "Chargeurs de Véhicules Électriques", desc: "Nous installons des chargeurs pour véhicules électriques (V.E.), permettant aux utilisateurs de charger leurs voitures électriques à domicile ou dans leur entreprise en profitant de l'énergie solaire générée. Peut également inclure un auvent solaire et des systèmes de gestion de charge, ainsi que la charge payante pour les clients ou utilisateurs externes.", whatsapp: "CHARGEURS+VE" },
+                    mantenimiento: { title: "Maintenance et Nettoyage", desc: "Nous offrons des services de maintenance, garde 24h/24 et 7j/7, nettoyage et systèmes de protection contre la saleté ou les oiseaux, pour assurer que vos panneaux solaires fonctionnent de manière optimale, prolongeant leur durée de vie utile et maintenant leur efficacité. Système de surveillance propre avec IA intégrée pour notification d'incidents, faible production et contrôle mensuel du fonctionnement de l'installation.", whatsapp: "MAINTENANCE" },
+                    legalizacion: { title: "Légalisation de l'Installation", desc: "Notre équipe d'ingénieurs s'occupera de toutes les démarches nécessaires pour la légalisation de votre installation solaire et profiter de tous les avantages, en s'assurant qu'elle respecte toutes les normes et réglementations en vigueur.", whatsapp: "LEGALISATION" },
+                    subvenciones: { title: "Traitement des Subventions", desc: "Nous gérons les subventions et aides disponibles pour votre installation solaire, vous aidant à réduire le coût initial et rentabiliser votre investissement en un temps record.", whatsapp: "SUBVENTIONS" },
+                    ingenieria: { title: "Services d'Ingénierie", desc: "Nous fournissons des services d'ingénierie spécialisée dans la conception et l'exécution de projets énergétiques garantissant des solutions personnalisées et efficaces.", whatsapp: "INGENIERIE" },
+                    asesoria: { title: "Conseil Énergétique", desc: "Nous vous conseillons dans vos projets d'efficacité énergétique grâce aux Certificats d'Économie d'Énergie, solutions innovantes comme le système Cooper Oner et projets d'ingénierie pour trouver le système le plus optimal pour couvrir vos besoins. Nous fournissons également des conseils sur la contractualisation de vos factures avec les commercialisateurs disponibles avec notre agent Fenix New Energy.", whatsapp: "CONSEIL+ENERGETIQUE" },
+                    parques: { title: "Parcs Solaires et Producteurs", desc: "Nous développons et gérons des parcs solaires pour la production d'énergie à grande échelle, contribuant à l'approvisionnement en énergie propre et durable pour les communautés et entreprises. Analyse d'opportunités pour les promoteurs et gestion de projet.", whatsapp: "PARCS+SOLAIRES" }
+                },
+                contractService: "Contracter service",
+                footer: "© 2025 Solsulet. Tous droits réservés."
+            },
+            de: {
+                title: "Fordern Sie Ihr Angebot an — Solarpanels",
+                subtitle: "Maßgeschneiderte Photovoltaiklösungen für Ihr Zuhause oder Unternehmen",
+                response: "Antwort in weniger als 24h",
+                name: "Name",
+                namePlaceholder: "Ihr Name",
+                surname: "Nachname",
+                surnamePlaceholder: "Ihr Nachname",
+                email: "E-Mail",
+                emailPlaceholder: "ihre@email.com",
+                phone: "Telefon",
+                phonePlaceholder: "+49 30 000 000",
+                coordinates: "Google Maps Koordinaten",
+                coordinatesPlaceholder: "52.5200, 13.4050 oder Google Maps URL",
+                invoice: "Stromrechnung anhängen",
+                invoiceText: "Ziehen Sie Ihre Rechnung hierher oder klicken Sie zum Auswählen",
+                loadFile: "Datei laden",
+                observations: "Bemerkungen",
+                observationsPlaceholder: "Erzählen Sie uns mehr Details über Ihr Projekt...",
+                privacy: "Ich akzeptiere die Datenschutzrichtlinie und die Verarbeitung meiner persönlichen Daten für das Versenden von Angeboten.",
+                sendWhatsApp: "Per WhatsApp senden",
+                copyMessage: "Nachricht kopieren",
+                visitWeb: "Besuchen Sie www.solsulet.com",
+                messageHeader: "🌞 SOLARPANEL-ANGEBOTSANFRAGE",
+                previewText: "Füllen Sie das Formular aus, um die Nachrichtenvorschau zu sehen...",
+                servicesTitle: "Unsere Dienstleistungen",
+                services: {
+                    autoconsumo: { title: "Eigenverbrauchsanlagen", desc: "Wir führen Installationen von Solarpanels und Batterien in Häusern, Gemeinden und Unternehmen durch, um ihren eigenen Strom zu erzeugen. Immer mit den innovativsten Produkten, um die Energieabhängigkeit vom Stromnetz zu reduzieren und die Energiekosten zu senken.", whatsapp: "EIGENVERBRAUCH" },
+                    suministro: { title: "Versorgungslösungen", desc: "Wir führen Installationen von Solarpanels und Batterien in Häusern, Gemeinden und Unternehmen durch, um ihren eigenen Strom zu erzeugen. Immer mit den innovativsten Produkten, um die Energieabhängigkeit vom Stromnetz zu reduzieren und die Energiekosten zu senken.", whatsapp: "VERSORGUNGSLOESUNGEN" },
+                    aisladas: { title: "Netzunabhängige Installationen", desc: "Wir sind Spezialisten für die Planung und Installation autonomer Solarsysteme, die nicht vom Stromnetz abhängen, sowohl für Bewässerung als auch für Wohnungen, kombiniert oder nicht mit Generatoren und Speicher- oder anderen erneuerbaren Energien.", whatsapp: "INSELANLAGEN" },
+                    cargadores: { title: "Elektrofahrzeug-Ladegeräte", desc: "Wir installieren Ladegeräte für Elektrofahrzeuge (E.F.), die es Benutzern ermöglichen, ihre Elektroautos zu Hause oder in ihrem Unternehmen zu laden und dabei die erzeugte Solarenergie zu nutzen. Kann auch eine Solarüberdachung und Lastmanagementsysteme sowie kostenpflichtige Ladung für externe Kunden oder Benutzer umfassen.", whatsapp: "EV+LADEGERAETE" },
+                    mantenimiento: { title: "Wartung und Reinigung", desc: "Wir bieten Wartungsdienste, 24/7-Überwachung, Reinigung und Schutzsysteme gegen Schmutz oder Vögel, um sicherzustellen, dass Ihre Solarpanels optimal funktionieren, ihre Lebensdauer verlängern und ihre Effizienz aufrechterhalten. Eigenes Überwachungssystem mit integrierter KI für Störungsmeldungen, geringe Produktion und monatliche Kontrolle des Anlagenbetriebs.", whatsapp: "WARTUNG" },
+                    legalizacion: { title: "Anlagenlegalisierung", desc: "Unser Ingenieursteam kümmert sich um alle notwendigen Verfahren für die Legalisierung Ihrer Solaranlage und nutzt alle Vorteile, wobei sichergestellt wird, dass sie allen geltenden Normen und Vorschriften entspricht.", whatsapp: "LEGALISIERUNG" },
+                    subvenciones: { title: "Subventionsabwicklung", desc: "Wir verwalten die verfügbaren Subventionen und Hilfen für Ihre Solaranlage und helfen Ihnen, die Anfangskosten zu reduzieren und Ihre Investition in Rekordzeit rentabel zu machen.", whatsapp: "SUBVENTIONEN" },
+                    ingenieria: { title: "Ingenieurdienstleistungen", desc: "Wir bieten spezialisierte Ingenieurdienstleistungen in der Planung und Ausführung von Energieprojekten und garantieren personalisierte und effiziente Lösungen.", whatsapp: "INGENIEURWESEN" },
+                    asesoria: { title: "Energieberatung", desc: "Wir beraten Sie bei Ihren Energieeffizienzprojekten durch Energiesparzertifikate, innovative Lösungen wie das Cooper Oner System und Ingenieursprojekte, um das optimalste System zur Deckung Ihrer Bedürfnisse zu finden. Wir bieten auch Beratung bei der Vertragsgestaltung Ihrer Rechnungen mit den verfügbaren Vermarktern mit unserem Fenix New Energy Agenten.", whatsapp: "ENERGIEBERATUNG" },
+                    parques: { title: "Solarparks und Produzenten", desc: "Wir entwickeln und verwalten Solarparks für die großangelegte Energieproduktion und tragen zur Versorgung mit sauberer und nachhaltiger Energie für Gemeinden und Unternehmen bei. Chancenanalyse für Entwickler und Projektmanagement.", whatsapp: "SOLARPARKS" }
+                },
+                contractService: "Service beauftragen",
+                footer: "© 2025 Solsulet. Alle Rechte vorbehalten."
+            },
+            ru: {
+                title: "Запросите ваше предложение — Солнечные панели",
+                subtitle: "Индивидуальные фотоэлектрические решения для вашего дома или бизнеса",
+                response: "Ответ менее чем за 24ч",
+                name: "Имя",
+                namePlaceholder: "Ваше имя",
+                surname: "Фамилия",
+                surnamePlaceholder: "Ваша фамилия",
+                email: "Электронная почта",
+                emailPlaceholder: "ваш@email.com",
+                phone: "Телефон",
+                phonePlaceholder: "+7 900 000 00 00",
+                coordinates: "Координаты Google Maps",
+                coordinatesPlaceholder: "55.7558, 37.6176 или URL Google Maps",
+                invoice: "Приложить счет за электричество",
+                invoiceText: "Перетащите ваш счет сюда или нажмите для выбора",
+                loadFile: "Загрузить файл",
+                observations: "Замечания",
+                observationsPlaceholder: "Расскажите нам больше деталей о вашем проекте...",
+                privacy: "Я принимаю Политику конфиденциальности и обработку моих персональных данных для отправки предложений.",
+                sendWhatsApp: "Отправить через WhatsApp",
+                copyMessage: "Копировать сообщение",
+                visitWeb: "Посетить www.solsulet.com",
+                messageHeader: "🌞 ЗАПРОС ПРЕДЛОЖЕНИЯ - СОЛНЕЧНЫЕ ПАНЕЛИ",
+                previewText: "Заполните форму, чтобы увидеть предварительный просмотр сообщения...",
+                servicesTitle: "Наши услуги",
+                services: {
+                    autoconsumo: { title: "Установки для самопотребления", desc: "Мы выполняем установки солнечных панелей и батарей в домах, сообществах и предприятиях для генерации собственного электричества. Всегда с самыми инновационными продуктами для снижения энергетической зависимости от электросети и снижения энергетических затрат.", whatsapp: "САМОПОТРЕБЛЕНИЕ" },
+                    suministro: { title: "Решения по снабжению", desc: "Мы выполняем установки солнечных панелей и батарей в домах, сообществах и предприятиях для генерации собственного электричества. Всегда с самыми инновационными продуктами для снижения энергетической зависимости от электросети и снижения энергетических затрат.", whatsapp: "РЕШЕНИЯ+СНАБЖЕНИЯ" },
+                    aisladas: { title: "Изолированные от сети установки", desc: "Мы специалисты по проектированию и установке автономных солнечных систем, которые не зависят от электросети, как для орошения, так и для жилых домов в сочетании или без генераторных установок и накопительных или других возобновляемых источников энергии.", whatsapp: "ИЗОЛИРОВАННЫЕ+УСТАНОВКИ" },
+                    cargadores: { title: "Зарядные устройства для электромобилей", desc: "Мы устанавливаем зарядные устройства для электромобилей (Э.М.), позволяя пользователям заряжать свои электромобили дома или в своем бизнесе, используя генерируемую солнечную энергию. Также может включать солнечный навес и системы управления нагрузкой, а также платную зарядку для внешних клиентов или пользователей.", whatsapp: "ЗАРЯДНЫЕ+УСТРОЙСТВА" },
+                    mantenimiento: { title: "Обслуживание и очистка", desc: "Мы предлагаем услуги обслуживания, круглосуточную охрану, очистку и системы защиты от грязи или птиц, чтобы обеспечить оптимальную работу ваших солнечных панелей, продлевая их срок службы и поддерживая их эффективность. Собственная система мониторинга с интегрированным ИИ для уведомления об инцидентах, низкой производительности и ежемесячного контроля работы установки.", whatsapp: "ОБСЛУЖИВАНИЕ" },
+                    legalizacion: { title: "Легализация установки", desc: "Наша команда инженеров позаботится о всех необходимых процедурах для легализации вашей солнечной установки и использования всех преимуществ, обеспечивая соответствие всем действующим нормам и правилам.", whatsapp: "ЛЕГАЛИЗАЦИЯ" },
+                    subvenciones: { title: "Оформление субсидий", desc: "Мы управляем субсидиями и помощью, доступными для вашей солнечной установки, помогая вам снизить первоначальную стоимость и сделать ваши инвестиции прибыльными в рекордные сроки.", whatsapp: "СУБСИДИИ" },
+                    ingenieria: { title: "Инженерные услуги", desc: "Мы предоставляем специализированные инженерные услуги в области проектирования и выполнения энергетических проектов, гарантируя персонализированные и эффективные решения.", whatsapp: "ИНЖЕНЕРИЯ" },
+                    asesoria: { title: "Энергетическое консультирование", desc: "Мы консультируем вас по проектам энергоэффективности через Сертификаты энергосбережения, инновационные решения, такие как система Cooper Oner, и инженерные проекты для поиска наиболее оптимальной системы для покрытия ваших потребностей. Мы также предоставляем консультации по заключению договоров на ваши счета с доступными поставщиками через нашего агента Fenix New Energy.", whatsapp: "ЭНЕРГЕТИЧЕСКОЕ+КОНСУЛЬТИРОВАНИЕ" },
+                    parques: { title: "Солнечные парки и производители", desc: "Мы разрабатываем и управляем солнечными парками для крупномасштабного производства энергии, способствуя поставке чистой и устойчивой энергии для сообществ и предприятий. Анализ возможностей для застройщиков и управление проектами.", whatsapp: "СОЛНЕЧНЫЕ+ПАРКИ" }
+                },
+                contractService: "Заказать услугу",
+                footer: "© 2025 Solsulet. Все права защищены."
+            },
+            ar: {
+                title: "اطلب عرض الأسعار الخاص بك — الألواح الشمسية",
+                subtitle: "حلول الطاقة الشمسية المخصصة لمنزلك أو عملك",
+                response: "الرد في أقل من 24 ساعة",
+                name: "الاسم",
+                namePlaceholder: "اسمك",
+                surname: "اللقب",
+                surnamePlaceholder: "لقبك",
+                email: "البريد الإلكتروني",
+                emailPlaceholder: "your@email.com",
+                phone: "الهاتف",
+                phonePlaceholder: "+966 50 000 0000",
+                coordinates: "إحداثيات خرائط جوجل",
+                coordinatesPlaceholder: "24.7136, 46.6753 أو رابط خرائط جوجل",
+                invoice: "إرفاق فاتورة الكهرباء",
+                invoiceText: "اسحب فاتورتك هنا أو انقر للاختيار",
+                loadFile: "تحميل الملف",
+                observations: "ملاحظات",
+                observationsPlaceholder: "أخبرنا المزيد من التفاصيل حول مشروعك...",
+                privacy: "أوافق على سياسة الخصوصية ومعالجة بياناتي الشخصية لإرسال عروض الأسعار.",
+                sendWhatsApp: "إرسال عبر واتساب",
+                copyMessage: "نسخ الرسالة",
+                visitWeb: "زيارة www.solsulet.com",
+                messageHeader: "🌞 طلب عرض أسعار - الألواح الشمسية",
+                previewText: "أكمل النموذج لرؤية معاينة الرسالة...",
+                servicesTitle: "خدماتنا",
+                services: {
+                    autoconsumo: { title: "تركيبات الاستهلاك الذاتي", desc: "نقوم بتنفيذ تركيبات الألواح الشمسية والبطاريات في المنازل والمجتمعات والشركات لتوليد الكهرباء الخاصة بهم. دائماً مع أكثر المنتجات ابتكاراً لتقليل الاعتماد على الطاقة من الشبكة الكهربائية وتقليل تكاليف الطاقة.", whatsapp: "الاستهلاك+الذاتي" },
+                    suministro: { title: "حلول الإمداد", desc: "نقوم بتنفيذ تركيبات الألواح الشمسية والبطاريات في المنازل والمجتمعات والشركات لتوليد الكهرباء الخاصة بهم. دائماً مع أكثر المنتجات ابتكاراً لتقليل الاعتماد على الطاقة من الشبكة الكهربائية وتقليل تكاليف الطاقة.", whatsapp: "حلول+الإمداد" },
+                    aisladas: { title: "التركيبات المعزولة عن الشبكة", desc: "نحن متخصصون في تصميم وتركيب أنظمة الطاقة الشمسية المستقلة التي لا تعتمد على الشبكة الكهربائية، سواء في الري أو في المساكن مجتمعة أو غير مجتمعة مع مجموعات المولدات والتراكم أو الطاقات المتجددة الأخرى.", whatsapp: "التركيبات+المعزولة" },
+                    cargadores: { title: "شواحن السيارات الكهربائية", desc: "نقوم بتركيب شواحن للسيارات الكهربائية، مما يسمح للمستخدمين بشحن سياراتهم الكهربائية في المنزل أو في أعمالهم مستفيدين من الطاقة الشمسية المولدة. يمكن أن تشمل أيضاً مظلة شمسية وأنظمة إدارة الحمولة، وكذلك الشحن المدفوع للعملاء أو المستخدمين الخارجيين.", whatsapp: "شواحن+السيارات+الكهربائية" },
+                    mantenimiento: { title: "الصيانة والتنظيف", desc: "نقدم خدمات الصيانة والحراسة على مدار الساعة طوال أيام الأسبوع والتنظيف وأنظمة الحماية ضد الأوساخ أو الطيور، لضمان عمل ألواحكم الشمسية بشكل مثالي، وإطالة عمرها الافتراضي والحفاظ على كفاءتها. نظام مراقبة خاص مع ذكاء اصطناعي متكامل لإشعار الحوادث وانخفاض الإنتاج والتحكم الشهري في تشغيل التركيب.", whatsapp: "الصيانة" },
+                    legalizacion: { title: "تقنين التركيب", desc: "سيتولى فريق المهندسين لدينا جميع الإجراءات اللازمة لتقنين تركيب الطاقة الشمسية الخاص بكم والاستفادة من جميع المزايا، مع ضمان امتثاله لجميع المعايير واللوائح السارية.", whatsapp: "التقنين" },
+                    subvenciones: { title: "معالجة الإعانات", desc: "نحن ندير الإعانات والمساعدات المتاحة لتركيب الطاقة الشمسية الخاص بكم، مما يساعدكم على تقليل التكلفة الأولية وجعل استثماركم مربحاً في وقت قياسي.", whatsapp: "الإعانات" },
+                    ingenieria: { title: "الخدمات الهندسية", desc: "نقدم خدمات هندسية متخصصة في تصميم وتنفيذ المشاريع الطاقية مع ضمان حلول مخصصة وفعالة.", whatsapp: "الهندسة" },
+                    asesoria: { title: "الاستشارات الطاقية", desc: "ننصحكم في مشاريع كفاءة الطاقة الخاصة بكم من خلال شهادات توفير الطاقة، والحلول المبتكرة مثل نظام Cooper Oner ومشاريع الهندسة للعثور على النظام الأمثل لتغطية احتياجاتكم. كما نقدم المشورة في التعاقد على فواتيركم مع المسوقين المتاحين مع وكيلنا Fenix New Energy.", whatsapp: "الاستشارات+الطاقية" },
+                    parques: { title: "المتنزهات الشمسية والمنتجون", desc: "نطور وندير المتنزهات الشمسية لإنتاج الطاقة على نطاق واسع، مساهمين في إمداد الطاقة النظيفة والمستدامة للمجتمعات والشركات. تحليل الفرص للمطورين وإدارة المشاريع.", whatsapp: "المتنزهات+الشمسية" }
+                },
+                contractService: "التعاقد على الخدمة",
+                footer: "© 2025 Solsulet. جميع الحقوق محفوظة."
+            }
+        };
 
-        // Language change function
-        function changeLanguage(lang) {
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                themeIcon.textContent = '☀️';
+            } else {
+                body.classList.remove('dark-mode');
+                themeIcon.textContent = '🌙';
+            }
+        }
+
+        function switchLanguage(lang) {
             currentLanguage = lang;
             
-            // Update active language button
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Set document direction for Arabic
-            if (lang === 'ar') {
-                document.body.setAttribute('dir', 'rtl');
-                document.documentElement.setAttribute('lang', 'ar');
-            } else {
-                document.body.setAttribute('dir', 'ltr');
-                document.documentElement.setAttribute('lang', lang);
-            }
-            
-            // Update all translatable elements
-            document.querySelectorAll('[data-translate]').forEach(element => {
-                const key = element.getAttribute('data-translate');
-                if (translations[lang] && translations[lang][key]) {
-                    element.textContent = translations[lang][key];
+            // Update active language chip
+            document.querySelectorAll('.lang-chip').forEach(chip => {
+                chip.classList.remove('active');
+                if (chip.textContent === lang.toUpperCase()) {
+                    chip.classList.add('active');
                 }
             });
             
-            // Update placeholders
-            document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-translate-placeholder');
-                if (translations[lang] && translations[lang][key]) {
-                    element.placeholder = translations[lang][key];
-                }
+            // Update all text content
+            const t = translations[lang];
+            
+            document.querySelector('.title-section h1').textContent = t.title;
+            document.querySelector('.title-section p').textContent = t.subtitle;
+            document.querySelector('.status-badge').innerHTML = `<div class="status-dot"></div>${t.response}`;
+            
+            // Form labels and placeholders
+            document.querySelector('label[for="nombre"]').textContent = t.name;
+            document.getElementById('nombre').placeholder = t.namePlaceholder;
+            document.querySelector('label[for="apellidos"]').textContent = t.surname;
+            document.getElementById('apellidos').placeholder = t.surnamePlaceholder;
+            document.querySelector('label[for="email"]').textContent = t.email;
+            document.getElementById('email').placeholder = t.emailPlaceholder;
+            document.querySelector('label[for="telefono"]').textContent = t.phone;
+            document.getElementById('telefono').placeholder = t.phonePlaceholder;
+            document.querySelector('label[for="coordenadas"]').textContent = t.coordinates;
+            document.getElementById('coordenadas').placeholder = t.coordinatesPlaceholder;
+            document.querySelector('label[for="factura"]').textContent = t.invoice;
+            document.querySelector('.file-upload-text').textContent = t.invoiceText;
+            document.querySelector('.file-upload-button').textContent = t.loadFile;
+            document.querySelector('label[for="observaciones"]').textContent = t.observations;
+            document.getElementById('observaciones').placeholder = t.observationsPlaceholder;
+            
+            // Privacy and buttons
+            document.querySelector('.privacy-section div:last-child').innerHTML = t.privacy.replace('Política de Privacidad', '<a href="#" class="privacy-link">Política de Privacidad</a>');
+            document.querySelector('.btn-primary').innerHTML = `<span>📱</span> ${t.sendWhatsApp}`;
+            document.querySelector('.btn-secondary').innerHTML = `<span>📋</span> ${t.copyMessage}`;
+            document.querySelector('.btn-ghost').innerHTML = `<span>🌐</span> ${t.visitWeb}`;
+            
+            // Message preview
+            document.querySelector('.message-header').textContent = t.messageHeader;
+            if (document.getElementById('messageBody').textContent.includes('Completa') || document.getElementById('messageBody').textContent.includes('Complete') || document.getElementById('messageBody').textContent.includes('أكمل')) {
+                document.getElementById('messageBody').textContent = t.previewText;
+            }
+            
+            // Services section
+            document.querySelector('.services-title').textContent = t.servicesTitle;
+            
+            // Footer
+            document.querySelector('.footer-content p:first-child').textContent = t.footer;
+            
+            // Update preview if form has data
+            updatePreview();
+            
+            // Update service cards
+            updateServiceCards();
+        }
+
+        function updateServiceCards() {
+            const t = translations[currentLanguage];
+            
+            // Update service titles and descriptions
+            Object.keys(t.services).forEach(serviceKey => {
+                const titleElement = document.querySelector(`[data-service="${serviceKey}"].service-title`);
+                const descElement = document.querySelector(`[data-service="${serviceKey}"].service-description`);
+                const buttonElement = document.querySelector(`[data-service="${serviceKey}"] + .service-button`);
+                
+                if (titleElement) titleElement.textContent = t.services[serviceKey].title;
+                if (descElement) descElement.textContent = t.services[serviceKey].desc;
             });
             
-            // Update services
-            updateServices();
-            
-            // Update preview
-            updatePreview();
-            
-            // Update page title
-            document.title = translations[lang]['header.title'] || document.title;
+            // Update all service buttons
+            document.querySelectorAll('.service-button').forEach(button => {
+                button.textContent = t.contractService;
+            });
         }
 
-        // Update services function
-        function updateServices() {
-            const servicesGrid = document.getElementById('servicesGrid');
-            const services = servicesData[currentLanguage] || servicesData['es'];
+        function contactService(serviceType) {
+            const t = translations[currentLanguage];
+            const serviceData = t.services[serviceType];
             
-            servicesGrid.innerHTML = services.map(service => `
-                <div class="service-card">
-                    <h3 class="service-title">${service.title}</h3>
-                    <p class="service-description">${service.description}</p>
-                    <button class="btn btn-secondary" data-service="${service.title}" onclick="contactService(this)">
-                        ${translations[currentLanguage]['services.contractBtn'] || 'Contratar servicio'}
-                    </button>
-                </div>
-            `).join('');
+            if (serviceData) {
+                const message = `🌞 *INTERÉS EN SERVICIO: ${serviceData.whatsapp}*\n\n\n🔥 *Me interesa el servicio de ${serviceData.title}. ¿Podrían contactarme?*`;
+                const whatsappUrl = `https://api.whatsapp.com/send/?phone=34600821668&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
+                window.open(whatsappUrl, '_blank');
+            }
         }
 
-        // File upload handling
-        document.getElementById('billFile').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name;
-            const fileNameDiv = document.getElementById('fileName');
-            if (fileName) {
-                fileNameDiv.textContent = `✅ ${fileName}`;
+        function togglePrivacy() {
+            privacyAccepted = !privacyAccepted;
+            const checkbox = document.getElementById('privacyCheck');
+            const checkMark = document.getElementById('checkMark');
+            
+            if (privacyAccepted) {
+                checkbox.classList.add('checked');
+                checkMark.style.display = 'block';
             } else {
-                fileNameDiv.textContent = '';
+                checkbox.classList.remove('checked');
+                checkMark.style.display = 'none';
             }
-            updatePreview();
-        });
-
-        // Form input listeners for real-time preview
-        const formInputs = document.querySelectorAll('#quoteForm input, #quoteForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('input', updatePreview);
-        });
-
-        function sanitize(text) {
-            return text ? text.trim().replace(/[<>]/g, '') : '';
-        }
-
-        function parseCoords(coordsInput) {
-            if (!coordsInput) return '';
-            
-            // Check if it's a Google Maps URL
-            if (coordsInput.includes('google.com/maps') || coordsInput.includes('goo.gl/maps')) {
-                return coordsInput;
-            }
-            
-            // Try to parse as coordinates
-            const coords = coordsInput.match(/-?\d+\.?\d*,-?\s*-?\d+\.?\d*/);
-            return coords ? coords[0] : coordsInput;
-        }
-
-        function buildSummary() {
-            const firstName = sanitize(document.getElementById('firstName').value);
-            const lastName = sanitize(document.getElementById('lastName').value);
-            const email = sanitize(document.getElementById('email').value);
-            const phone = sanitize(document.getElementById('phone').value);
-            const coordinates = parseCoords(document.getElementById('coordinates').value);
-            const observations = sanitize(document.getElementById('observations').value);
-            const fileName = document.getElementById('billFile').files[0]?.name || '';
-
-            const t = translations[currentLanguage];
-            let summary = `${t['whatsapp.title']}\n\n`;
-            
-            if (firstName || lastName) {
-                summary += `${t['whatsapp.client']} ${firstName} ${lastName}\n`;
-            }
-            if (email) {
-                summary += `${t['whatsapp.email']} ${email}\n`;
-            }
-            if (phone) {
-                summary += `${t['whatsapp.phone']} ${phone}\n`;
-            }
-            if (coordinates) {
-                summary += `${t['whatsapp.location']} ${coordinates}\n`;
-            }
-            if (fileName) {
-                summary += `${t['whatsapp.bill']} ${fileName}\n`;
-            }
-            if (observations) {
-                summary += `${t['whatsapp.observations']} ${observations}\n`;
-            }
-            
-            summary += `\n${t['whatsapp.request']}`;
-            
-            return summary;
-        }
-
-        function buildServiceMessage(serviceName) {
-            const firstName = sanitize(document.getElementById('firstName').value);
-            const phone = sanitize(document.getElementById('phone').value);
-            const coordinates = parseCoords(document.getElementById('coordinates').value);
-            const observations = sanitize(document.getElementById('observations').value);
-
-            const t = translations[currentLanguage];
-            let message = `${t['whatsapp.serviceTitle']} ${serviceName.toUpperCase()}*\n\n`;
-            
-            if (firstName) {
-                message += `${t['whatsapp.name']} ${firstName}\n`;
-            }
-            if (phone) {
-                message += `${t['whatsapp.phone']} ${phone}\n`;
-            }
-            if (coordinates) {
-                message += `${t['whatsapp.location']} ${coordinates}\n`;
-            }
-            if (observations) {
-                message += `${t['whatsapp.observations']} ${observations}\n`;
-            }
-            
-            message += `\n${t['whatsapp.serviceRequest']} ${serviceName}. ${t['whatsapp.serviceContact']}`;
-            
-            return message;
         }
 
         function updatePreview() {
-            const summary = buildSummary();
-            const previewElement = document.getElementById('previewText');
-            
-            if (summary.trim() === `${translations[currentLanguage]['whatsapp.title']}\n\n${translations[currentLanguage]['whatsapp.request']}`) {
-                previewElement.textContent = translations[currentLanguage]['preview.placeholder'];
-            } else {
-                previewElement.textContent = summary;
-            }
-        }
+            const nombre = document.getElementById('nombre').value;
+            const apellidos = document.getElementById('apellidos').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const coordenadas = document.getElementById('coordenadas').value;
+            const observaciones = document.getElementById('observaciones').value;
+            const fileName = document.getElementById('fileName').textContent;
 
-        function sendWhatsApp() {
-            const form = document.getElementById('quoteForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
+            if (!nombre && !apellidos && !email && !telefono) {
+                document.getElementById('messageBody').textContent = 'Completa el formulario para ver la vista previa del mensaje...';
                 return;
             }
 
-            const summary = buildSummary();
-            const whatsappUrl = `https://wa.me/34600821668?text=${encodeURIComponent(summary)}`;
+            const message = `🌞 SOLICITUD DE PRESUPUESTO - PLACAS SOLARES
+
+👤 DATOS DE CONTACTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Nombre: ${nombre} ${apellidos}
+Email: ${email}
+Teléfono: ${telefono}
+
+📍 UBICACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${coordenadas || 'No especificada'}
+
+📄 DOCUMENTACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Factura adjunta: ${fileName || 'No adjuntada'}
+
+💬 OBSERVACIONES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${observaciones || 'Sin observaciones adicionales'}
+
+¡Gracias por confiar en nosotros! 🌱`;
+
+            document.getElementById('messageBody').textContent = message;
+        }
+
+        function sendWhatsApp() {
+            if (!privacyAccepted) {
+                alert('Por favor, acepta la política de privacidad para continuar.');
+                return;
+            }
+
+            const message = document.getElementById('messageBody').textContent;
+            if (message === 'Completa el formulario para ver la vista previa del mensaje...') {
+                alert('Por favor, completa al menos los campos básicos del formulario.');
+                return;
+            }
+
+            const whatsappUrl = `https://wa.me/34600000000?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         }
 
-        function copySummary() {
-            const summary = buildSummary();
-            navigator.clipboard.writeText(summary).then(() => {
-                const btn = event.target.closest('.btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '✅ ' + (translations[currentLanguage]['actions.copySummary'] || 'Copiado');
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
+        function copyMessage() {
+            if (!privacyAccepted) {
+                alert('Por favor, acepta la política de privacidad para continuar.');
+                return;
+            }
+
+            const message = document.getElementById('messageBody').textContent;
+            if (message === 'Completa el formulario para ver la vista previa del mensaje...') {
+                alert('Por favor, completa al menos los campos básicos del formulario.');
+                return;
+            }
+
+            navigator.clipboard.writeText(message).then(() => {
+                alert('¡Mensaje copiado al portapapeles!');
             });
         }
 
-        function contactService(button) {
-            const serviceName = button.getAttribute('data-service');
-            const message = buildServiceMessage(serviceName);
-            const whatsappUrl = `https://wa.me/34600821668?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
+        // File upload handling
+        document.getElementById('facturaFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = `📎 ${file.name}`;
+                updatePreview();
+            }
+        });
 
-        // Initialize
-        updateServices();
-        updatePreview();
+        // Update preview on input changes
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        // Drag and drop functionality
+        const fileUpload = document.querySelector('.file-upload');
+        
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = '#D4AF37';
+            fileUpload.style.background = 'rgba(255, 246, 219, 0.5)';
+        });
+
+        fileUpload.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            fileUpload.style.borderColor = 'rgba(232, 217, 168, 0.6)';
+            fileUpload.style.background = 'rgba(255, 246, 219, 0.3)';
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('facturaFile').files = files;
+                document.getElementById('fileName').textContent = `📎 ${files[0].name}`;
+                updatePreview();
+            }
+            fileUpload.style.borderColor = 'rgba(232, 217, 168, 0.6)';
+            fileUpload.style.background = 'rgba(255, 246, 219, 0.3)';
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97299bc1b0c3f769',t:'MTc1NTc3MzgzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972ab00323fbf77f',t:'MTc1NTc4NTE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
